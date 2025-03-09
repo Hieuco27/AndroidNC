@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">NavigationFragment</string>
+    <string name="nav_phong">Quản lý phòng</string>
+    <string name="nav_khach">Khách thuê </string>
+    <string name="nav_hopdong">Hợp đồng</string>
+    <string name="nav_hoadon">Hóa đơn </string>
+    <string name="nav_doanhthu">Doanh thu</string>
+    <string name="nav_dangxuat">Đăng xuất </string>
+    <string name="nav_drawer_close">Close</string>
+    <string name="nav_drawer_open">Open</string>
+
+</resources>

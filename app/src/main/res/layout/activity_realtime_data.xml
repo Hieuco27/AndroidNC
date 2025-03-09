@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16sp"
+    android:layout_gravity="top">
+
+    <EditText
+        android:id="@+id/edt_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Data"/>
+    <Button
+        android:id="@+id/btn_push_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Push data"
+        />
+    <Button
+        android:id="@+id/btn_get_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get data"
+        />
+    <TextView
+        android:id="@+id/tv_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""/>
+    <Button
+        android:id="@+id/btn_delete_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30sp"
+        android:text="Delete data"
+        />
+</LinearLayout>

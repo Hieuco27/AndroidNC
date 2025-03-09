@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/nav_phong"
+    android:title="@string/nav_phong"
+    android:icon="@drawable/nav_phong"
+    />
+    <item
+        android:id="@+id/nav_khach"
+        android:title="@string/nav_khach"
+        android:icon="@drawable/nav_khach"
+        />
+    <item
+        android:id="@+id/nav_hopdong"
+        android:title="@string/nav_hopdong"
+        android:icon="@drawable/nav_hopdong"
+        />
+    <item
+        android:id="@+id/nav_hoadon"
+        android:title="@string/nav_hoadon"
+        android:icon="@drawable/nav_hoadon"
+        />
+    <item
+        android:id="@+id/nav_doanhthu"
+        android:title="@string/nav_doanhthu"
+        android:icon="@drawable/nav_doanhthu"
+        />
+    <item
+        android:id="@+id/nav_dangxuat"
+        android:title="@string/nav_dangxuat"
+        android:icon="@drawable/nav_back"
+        />
+    <item
+        android:id="@+id/nav_myprofile"
+        android:title="My Profile"
+        android:icon="@drawable/nav_khach"
+        />
+    <item
+        android:id="@+id/nav_changepassword"
+        android:title=" Change Password"
+        android:icon="@drawable/ic_password"
+        />
+</menu>

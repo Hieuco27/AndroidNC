@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thêm phòng mới"
+        android:background="@drawable/btnmain"
+        android:padding="15dp"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/edt_sophong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_room"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:hint="Số phòng"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/edt_giaphong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_room"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:hint="Giá tiền phòng"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edt_giadien"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_room"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:hint="Giá điện"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edt_gianuoc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_room"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:hint="Giá nước"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/edt_giadv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_room"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:hint="Giá dịch vụ "
+        android:inputType="numberDecimal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:id="@+id/btn_them"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thêm"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btn_huy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Hủy"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/white"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+</LinearLayout>
