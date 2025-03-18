@@ -25,7 +25,7 @@
         android:id="@+id/txtAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My App"
+        android:text="My app home"
         android:textSize="24sp"
         android:textColor="@android:color/white"
         android:textStyle="bold"

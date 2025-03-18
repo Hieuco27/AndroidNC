@@ -39,7 +39,6 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         displayRoomInfo();
 
-
         // Nút Hủy
         binding.btnHuy.setOnClickListener(v -> finish());
     }
@@ -65,6 +64,8 @@ public class RoomDetailActivity extends AppCompatActivity {
                     binding.edtNguoithue.setText("Người thuê: Chưa có");
                     return;
                 }
+
+
 
                 AppDatabase.getInstance(this).khachDao().getTenantById(tenantId).observe(this, tenant -> {
                     if (tenant != null) {

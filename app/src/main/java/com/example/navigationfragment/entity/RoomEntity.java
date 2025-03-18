@@ -19,19 +19,14 @@ public class RoomEntity implements Serializable {
 
     @ColumnInfo(name = "soPhong")
     private String soPhong; // Số phòng, phải là duy nhất
-
     @ColumnInfo(name = "giaPhong")
     private double giaPhong;
-
     @ColumnInfo(name = "giaDien")
     private double giaDien;
-
     @ColumnInfo(name = "giaNuoc")
     private double giaNuoc;
-
     @ColumnInfo(name = "giaDichVu")
     private double giaDichVu;
-
     @ColumnInfo(name = "trangThai")
     private boolean trangThai;
 

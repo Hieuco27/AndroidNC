@@ -26,6 +26,7 @@ import com.example.navigationfragment.action.AddRoom;
 import com.example.navigationfragment.adapter.RoomAdapter;
 import com.example.navigationfragment.databinding.FragmentPhongBinding;
 import com.example.navigationfragment.entity.RoomEntity;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -101,37 +102,82 @@ public class PhongFragment extends Fragment {
     }
 
     private void syncFirebaseToRoom() {
-        roomRef.addValueEventListener(new ValueEventListener() {
+        roomRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<RoomEntity> firebaseRooms = new ArrayList<>();
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    RoomEntity room = data.getValue(RoomEntity.class);
-                    if (room != null) {
-                        firebaseRooms.add(room);
-                    }
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                RoomEntity room = snapshot.getValue(RoomEntity.class);
+                if (room != null) {
+                    new Thread(() -> {
+                        // Thêm vào Room nếu chưa có
+                        roomDAO.insert(room);
+
+                        // Cập nhật UI trên Main Thread
+                        requireActivity().runOnUiThread(() -> {
+                            roomList.add(room);
+                            roomAdapter.notifyDataSetChanged();
+                        });
+                    }).start();
                 }
+            }
 
-                // Cập nhật vào Room Database và UI
-                new Thread(() -> {
-                    roomDAO.deleteAllRooms(); // Xóa dữ liệu cũ
-                    roomDAO.insertRooms(firebaseRooms); // Thêm dữ liệu mới từ Firebase
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                RoomEntity updatedRoom = snapshot.getValue(RoomEntity.class);
+                if (updatedRoom != null) {
+                    new Thread(() -> {
+                        // Update vào Room DB
+                        roomDAO.update(updatedRoom);
 
-                    // Cập nhật UI trên Main Thread
-                    requireActivity().runOnUiThread(() -> {
-                        roomList.clear();
-                        roomList.addAll(firebaseRooms);
-                        roomAdapter.notifyDataSetChanged();
-                    });
-                }).start();
+                        // Cập nhật UI trên Main Thread
+                        requireActivity().runOnUiThread(() -> {
+                            // Tìm và update item trong roomList
+                            for (int i = 0; i < roomList.size(); i++) {
+                                if (roomList.get(i).getId() == updatedRoom.getId()) {
+                                    roomList.set(i, updatedRoom);
+                                    break;
+                                }
+                            }
+                            roomAdapter.notifyDataSetChanged();
+                        });
+                    }).start();
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                RoomEntity deletedRoom = snapshot.getValue(RoomEntity.class);
+                if (deletedRoom != null) {
+                    new Thread(() -> {
+                        // Xóa khỏi Room DB
+                        roomDAO.delete(deletedRoom);
+
+                        // Xóa khỏi danh sách và cập nhật UI
+                        requireActivity().runOnUiThread(() -> {
+                            for (int i = 0; i < roomList.size(); i++) {
+                                if (roomList.get(i).getId() == deletedRoom.getId()) {
+                                    roomList.remove(i);
+                                    break;
+                                }
+                            }
+                            roomAdapter.notifyDataSetChanged();
+                        });
+                    }).start();
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                // Trường hợp này ít dùng, Firebase báo khi 1 node thay đổi vị trí
+                // Nếu không sắp xếp theo key/priority thì có thể bỏ qua
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("FirebaseSync", "Lỗi tải dữ liệu từ Firebase: " + error.getMessage());
+                Log.e("FirebaseSync", "Lỗi ChildEventListener: " + error.getMessage());
             }
         });
     }
+
 
 
 }

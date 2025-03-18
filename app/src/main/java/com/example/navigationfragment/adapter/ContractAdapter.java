@@ -26,12 +26,17 @@ public class ContractAdapter extends  RecyclerView.Adapter<ContractAdapter.Contr
         this.contractList = contractList;
         notifyDataSetChanged();
     }
+    public  ContractAdapter(Context context){
+        this.context=context;
+
+    }
 
 
     @NonNull
     @Override
     public ContractAdapter.ContractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemAddHopdongBinding binding = ItemAddHopdongBinding.inflate(LayoutInflater.from(context),parent,false);
+        ContractViewHolder viewHolder = new ContractViewHolder(binding);
         return new ContractViewHolder(binding);
 
     }
@@ -51,13 +56,11 @@ public class ContractAdapter extends  RecyclerView.Adapter<ContractAdapter.Contr
         holder.binding.tvNguoio.setText("Số người ở: "+contract.getNumberOfGuests());
         holder.binding.tvCar.setText("Số lượng xe: "+contract.getNumberOfCars());
 
-
     }
 
     @Override
     public int getItemCount() {
         return contractList.size();
-
 
     }
     public  static  class ContractViewHolder extends RecyclerView.ViewHolder{
@@ -66,6 +69,5 @@ public class ContractAdapter extends  RecyclerView.Adapter<ContractAdapter.Contr
             super(binding.getRoot());
             this.binding = binding;
         }
-
     }
 }

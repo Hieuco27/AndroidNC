@@ -2,10 +2,12 @@ package com.example.navigationfragment.DAO;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import com.example.navigationfragment.entity.RoomEntity;
 
@@ -39,11 +41,14 @@ public interface RoomDAO {
     @Query("SELECT * FROM rooms WHERE soPhong = :soPhong LIMIT 1")
     LiveData<RoomEntity> getRoomBySoPhong(String soPhong);
 
-    // Xóa tất cả phòng
-    @Query("DELETE FROM rooms")
-    void deleteAllRooms();
+   @Update
+    void update(RoomEntity room);
+   @Delete
+    void delete(RoomEntity room);
 
-    // Lấy danh sách phòng kèm thông tin khách thuê
+
+
+
 
 
 }

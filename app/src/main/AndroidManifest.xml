@@ -17,6 +17,9 @@
         android:theme="@style/Theme.NavigationFragment"
         tools:targetApi="31">
         <activity
+            android:name=".action.AddContract"
+            android:exported="false" />
+        <activity
             android:name=".action.RoomDetailActivity"
             android:exported="false" />
         <activity

@@ -19,18 +19,8 @@ public class ContractEntity {
     @NonNull
     private int contractId;
 
-
     private int roomId;
     private String khachId;
-
-    public String getKhachId() {
-        return khachId;
-    }
-
-    public void setKhachId(String khachId) {
-        this.khachId = khachId;
-    }
-
     private String startDate;
     private String endDate;
     private int numberOfGuests;
@@ -49,7 +39,13 @@ public class ContractEntity {
         this.startDate = startDate;
         this.totalAmount = totalAmount;
     }
+    public String getKhachId() {
+        return khachId;
+    }
 
+    public void setKhachId(String khachId) {
+        this.khachId = khachId;
+    }
     public int getContractId() {
         return contractId;
     }

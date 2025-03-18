@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.navigationfragment.action.AddContract;
 import com.example.navigationfragment.action.AddKhach;
 import com.example.navigationfragment.action.RoomDetailActivity;
 import com.example.navigationfragment.databinding.BottomSheetRoomBinding;
@@ -56,6 +57,12 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                 intent.putExtra("room", room);
                 startActivity(intent);
                 dismiss();
+            }
+        });
+        binding.btnAddcontract.setOnClickListener(v -> {
+            if (getActivity()!=null){
+                Intent intent=new Intent(getActivity(), AddContract.class);
+                startActivity(intent);
             }
         });
         return binding.getRoot();
