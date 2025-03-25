@@ -2,7 +2,6 @@ package com.example.navigationfragment.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,60 +10,75 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.navigationfragment.databinding.ItemAddHopdongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ContractAdapter extends  RecyclerView.Adapter<ContractAdapter.ContractViewHolder>{
+public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.ContractViewHolder> {
 
     private List<ContractEntity> contractList;
     private Context context;
-    public ContractAdapter(List<ContractEntity> contractList, Context context) {
-        this.contractList = contractList;
+
+    // Constructor hiện tại: chỉ nhận Context, khởi tạo contractList rỗng
+    public ContractAdapter(Context context) {
         this.context = context;
+        this.contractList = new ArrayList<>();
+    }
+
+    // Constructor mới: nhận Context và danh sách contractList ban đầu
+    public ContractAdapter(Context context, List<ContractEntity> contractList) {
+        this.context = context;
+        this.contractList = (contractList != null) ? contractList : new ArrayList<>();
+    }
+
+
+    // Hàm cập nhật list khi observe từ LiveData
+    public void setContractList(List<ContractEntity> contractList) {
+        if (contractList != null) {
+            this.contractList = contractList;
+            notifyDataSetChanged();
+        }
     }
 
     public void updateData(List<ContractEntity> contractList) {
-        this.contractList = contractList;
+        this.contractList.clear();
+        if (contractList != null) {
+            this.contractList.addAll(contractList);
+        }
         notifyDataSetChanged();
-    }
-    public  ContractAdapter(Context context){
-        this.context=context;
-
     }
 
 
     @NonNull
     @Override
-    public ContractAdapter.ContractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemAddHopdongBinding binding = ItemAddHopdongBinding.inflate(LayoutInflater.from(context),parent,false);
-        ContractViewHolder viewHolder = new ContractViewHolder(binding);
+    public ContractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemAddHopdongBinding binding = ItemAddHopdongBinding.inflate(LayoutInflater.from(context), parent, false);
         return new ContractViewHolder(binding);
-
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContractAdapter.ContractViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ContractViewHolder holder, int position) {
         ContractEntity contract = contractList.get(position);
-        if(contract == null){
+        if (contract == null) {
             return;
         }
 
-        holder.binding.tvHopdong.setText("1. Hợp đồng phòng: "+contract.getRoomId());
-        holder.binding.tvKhachthue.setText("Người thuê: "+contract.getKhachId());
-        holder.binding.tvDatestart.setText("Ngày bắt đầu: "+contract.getStartDate());
-        holder.binding.tvDateend.setText("Ngày kết thúc: "+contract.getEndDate());
-
-        holder.binding.tvNguoio.setText("Số người ở: "+contract.getNumberOfGuests());
-        holder.binding.tvCar.setText("Số lượng xe: "+contract.getNumberOfCars());
-
+        // Gán dữ liệu
+        holder.binding.tvHopdong.setText("1. Hợp đồng phòng: " + contract.getRoomId());
+        holder.binding.tvKhachthue.setText("Người thuê: " + contract.getKhachId());
+        holder.binding.tvDatestart.setText("Ngày bắt đầu: " + contract.getStartDate());
+        holder.binding.tvDateend.setText("Ngày kết thúc: " + contract.getEndDate());
+        holder.binding.tvNguoio.setText("Số người ở: " + contract.getNumberOfGuests());
+        holder.binding.tvCar.setText("Số lượng xe: " + contract.getNumberOfCars());
     }
 
     @Override
     public int getItemCount() {
-        return contractList.size();
-
+        return (contractList != null) ? contractList.size() : 0;
     }
-    public  static  class ContractViewHolder extends RecyclerView.ViewHolder{
+
+    public static class ContractViewHolder extends RecyclerView.ViewHolder {
         ItemAddHopdongBinding binding;
+
         public ContractViewHolder(ItemAddHopdongBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

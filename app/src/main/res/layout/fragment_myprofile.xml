@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:padding="10sp"
         android:hint="Full Name"
+        android:background="@drawable/btnmain"
         android:layout_marginTop="30sp"
         />
     <EditText
@@ -26,29 +27,33 @@
         android:padding="10sp"
         android:hint="Email"
         android:layout_marginTop="30sp"
+        android:background="@drawable/btnmain"
         />
     <EditText
         android:id="@+id/edt_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10sp"
-        android:hint="Pass Word"
+        android:hint="Password"
         android:layout_marginTop="30sp"
+        android:background="@drawable/btnmain"
         />
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_update_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
         android:text="Update profile"
+        android:background="@drawable/btn_room"
         />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_update_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10sp"
         android:text="Update email"
+        android:background="@drawable/btn_room"
         />
 
 </LinearLayout>

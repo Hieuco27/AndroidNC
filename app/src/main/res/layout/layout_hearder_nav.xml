@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:gravity="bottom"
     android:padding="10sp"
-    android:background="@color/blue">
+
+    android:background="@drawable/nav">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_avatar"
         android:layout_width="80sp"

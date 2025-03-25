@@ -7,30 +7,46 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity(
         tableName = "rooms",
         indices = {@Index(value = "soPhong", unique = true)} // Đảm bảo soPhong không trùng lặp
 )
 public class RoomEntity implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private int id;
+
+    @PrimaryKey
+    @NonNull
+    private String id;
 
     @ColumnInfo(name = "soPhong")
-    private String soPhong; // Số phòng, phải là duy nhất
+    private String soPhong;
+
     @ColumnInfo(name = "giaPhong")
     private double giaPhong;
-    @ColumnInfo(name = "giaDien")
+
     private double giaDien;
-    @ColumnInfo(name = "giaNuoc")
     private double giaNuoc;
-    @ColumnInfo(name = "giaDichVu")
     private double giaDichVu;
-    @ColumnInfo(name = "trangThai")
     private boolean trangThai;
 
-    // ⭐ Constructor (Có thể thêm constructor không tham số nếu cần)
+
+    public RoomEntity() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+
+    public RoomEntity(@NonNull String id, String soPhong, double giaPhong, double giaDien, double giaNuoc, double giaDichVu, boolean trangThai) {
+        this.id = UUID.randomUUID().toString();
+        this.soPhong = soPhong;
+        this.giaPhong = giaPhong;
+        this.giaDien = giaDien;
+        this.giaNuoc = giaNuoc;
+        this.giaDichVu = giaDichVu;
+        this.trangThai = trangThai;
+    }
+
+    // Nếu cần thêm constructor tuỳ biến, nhớ gán đầy đủ các thuộc tính
     public RoomEntity(String soPhong, double giaPhong, double giaDien, double giaNuoc, double giaDichVu, boolean trangThai) {
         this.soPhong = soPhong;
         this.giaPhong = giaPhong;
@@ -39,32 +55,15 @@ public class RoomEntity implements Serializable {
         this.giaDichVu = giaDichVu;
         this.trangThai = trangThai;
     }
-public RoomEntity() {
 
-}
-    // ⭐ Getter và Setter
-    public int getId() {
-        return id;
+    // Getter & Setter
+
+    public double getGiaDichVu() {
+        return giaDichVu;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getSoPhong() {
-        return soPhong;
-    }
-
-    public void setSoPhong(String soPhong) {
-        this.soPhong = soPhong;
-    }
-
-    public double getGiaPhong() {
-        return giaPhong;
-    }
-
-    public void setGiaPhong(double giaPhong) {
-        this.giaPhong = giaPhong;
+    public void setGiaDichVu(double giaDichVu) {
+        this.giaDichVu = giaDichVu;
     }
 
     public double getGiaDien() {
@@ -83,12 +82,29 @@ public RoomEntity() {
         this.giaNuoc = giaNuoc;
     }
 
-    public double getGiaDichVu() {
-        return giaDichVu;
+    public double getGiaPhong() {
+        return giaPhong;
     }
 
-    public void setGiaDichVu(double giaDichVu) {
-        this.giaDichVu = giaDichVu;
+    public void setGiaPhong(double giaPhong) {
+        this.giaPhong = giaPhong;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public String getSoPhong() {
+        return soPhong;
+    }
+
+    public void setSoPhong(String soPhong) {
+        this.soPhong = soPhong;
     }
 
     public boolean isTrangThai() {
@@ -97,5 +113,18 @@ public RoomEntity() {
 
     public void setTrangThai(boolean trangThai) {
         this.trangThai = trangThai;
+    }
+
+    @Override
+    public String toString() {
+        return "RoomEntity{" +
+                "giaDichVu=" + giaDichVu +
+                ", id='" + id + '\'' +
+                ", soPhong='" + soPhong + '\'' +
+                ", giaPhong=" + giaPhong +
+                ", giaDien=" + giaDien +
+                ", giaNuoc=" + giaNuoc +
+                ", trangThai=" + trangThai +
+                '}';
     }
 }

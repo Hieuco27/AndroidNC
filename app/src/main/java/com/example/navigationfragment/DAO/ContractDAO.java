@@ -9,31 +9,47 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.example.navigationfragment.entity.ContractDetail;
 import com.example.navigationfragment.entity.ContractEntity;
+import com.example.navigationfragment.entity.ContractWithDetails;
 
 import java.util.List;
 
 @Dao
-public interface ContractDAO {
-    @Insert
-    void insert(ContractEntity contract);
 
-    @Query("SELECT * FROM contract WHERE roomId = :roomId AND isStatus = 1 LIMIT 1")
-    LiveData<ContractEntity> getActiveContractByRoom(int roomId);
+public interface ContractDAO {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(ContractEntity contract);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertContracts(List<ContractEntity> contracts);
 
-    @Query("SELECT * FROM contract WHERE contractId = :contractId")
-    LiveData<ContractEntity> getContractById(int contractId);
+    @Query("SELECT * FROM contracts WHERE roomId = :roomId AND isStatus = 1 LIMIT 1")
+    LiveData<ContractEntity> getActiveContractByRoom(String roomId);
+
+    @Query("SELECT COUNT(*) FROM contracts WHERE roomId = :roomId AND isStatus = 1")
+    int countActiveContractsByRoom(String roomId);
+
+    @Query("SELECT * FROM contracts WHERE contractId = :id LIMIT 1")
+    ContractEntity getContractById(String id);
+
     @Transaction
-    @Query("SELECT * FROM contract")
+    @Query("SELECT * FROM contracts")
     LiveData<List<ContractEntity>> getAllContracts();
+
     @Update
     void update(ContractEntity contract);
-    @Query("DELETE FROM contract")
-    void deleteAll();
+
     @Delete
     void delete(ContractEntity contract);
+
+    @Query("DELETE FROM contracts")
+    void deleteAll();
+
+    @Query("SELECT c.*, r.soPhong, k.tenKhach " +
+            "FROM contracts c " +
+            "LEFT JOIN rooms r ON c.roomId = r.id " +
+            "LEFT JOIN khachthue k ON c.khachId = k.khachId")
+    LiveData<List<ContractWithDetails>> getAllContractsWithDetails();
 }
+

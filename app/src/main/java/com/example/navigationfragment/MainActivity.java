@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Load fragment mặc định
         replaceFragment(new PhongFragment());
+        mCurrentFragment = PHONG_FRAGMENT;setTitle("Quản lý trọ");
+
         binding.navigationView.getMenu().findItem(R.id.nav_phong).setCheckable(true);
         showUserInformation();
     }
@@ -115,18 +117,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_phong && mCurrentFragment != PHONG_FRAGMENT) {
             replaceFragment(new PhongFragment());
             mCurrentFragment = PHONG_FRAGMENT;
+            setTitle("Phòng");
         } else if (id == R.id.nav_khach && mCurrentFragment != KHACH_FRAGMENT) {
             replaceFragment(new KhachFragment());
             mCurrentFragment = KHACH_FRAGMENT;
+            setTitle("Khách thuê");
         } else if (id == R.id.nav_hopdong && mCurrentFragment != HOPDONG_FRAGMENT) {
             replaceFragment(new HopDongFragment());
             mCurrentFragment = HOPDONG_FRAGMENT;
+            setTitle("Hợp đồng");
         } else if (id == R.id.nav_hoadon && mCurrentFragment != HOADON_FRAGMENT) {
             replaceFragment(new HoaDonFragment());
             mCurrentFragment = HOADON_FRAGMENT;
+            setTitle("Hóa đơn ");
         } else if (id == R.id.nav_doanhthu && mCurrentFragment != DOANHTHU_FRAGMENT) {
             replaceFragment(new DoanhThuFragment());
             mCurrentFragment = DOANHTHU_FRAGMENT;
+            setTitle("Doanh thu");
         } else if (id == R.id.nav_dangxuat) {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
@@ -135,10 +142,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_myprofile && mCurrentFragment!=MYPROFILE_FRAGMENT) {
             replaceFragment(mMyProfileFragment);
             mCurrentFragment = MYPROFILE_FRAGMENT;
+            setTitle("Profile");
         }
         else if (id == R.id.nav_changepassword && mCurrentFragment!=CHANGEPASSWORD_FRAGMENT) {
             replaceFragment(new ChangePassWordFragment());
             mCurrentFragment = CHANGEPASSWORD_FRAGMENT;
+            setTitle("Đổi mật khẩu");
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;

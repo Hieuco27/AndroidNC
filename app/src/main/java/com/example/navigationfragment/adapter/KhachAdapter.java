@@ -3,36 +3,36 @@ package com.example.navigationfragment.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.navigationfragment.databinding.ItemAddKhachBinding;
-import com.example.navigationfragment.databinding.ItemAddRoomBinding;
-import com.example.navigationfragment.entity.KhachEntity;
 import com.example.navigationfragment.entity.KhachWithRoom;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KhachAdapter extends RecyclerView.Adapter<KhachAdapter.KhachViewHolder> {
-    private List<KhachWithRoom> khachList;
+    private List<KhachWithRoom> khachList;// Danh sách khách thuê
     private final Context context;
+
     public KhachAdapter(List<KhachWithRoom> khachList, Context context) {
-        this.khachList = khachList;
+        this.khachList = khachList != null ? khachList : new ArrayList<>(); // Tránh null
         this.context = context;
     }
-    public void upDateData(List<KhachWithRoom> khachList){
-        this.khachList = khachList;
+    // Cập nhật dữ liệu mới
+    public void updateData(List<KhachWithRoom> khachList) {
+        this.khachList.clear();
+        if (khachList != null) {
+            this.khachList.addAll(khachList);
+        }
         notifyDataSetChanged();
     }
-
     public KhachAdapter(Context context) {
         this.context = context;
     }
-
-
     @NonNull
     @Override
     public KhachAdapter.KhachViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,11 +48,11 @@ public class KhachAdapter extends RecyclerView.Adapter<KhachAdapter.KhachViewHol
 
         KhachWithRoom item= khachList.get(position);
 
-
+        // Gán tooong tin khách thuê
         holder.binding.tvSdt.setText("Sđt :"+item.khach.getSdt());
         holder.binding.tvCccd.setText("CCCD :"+item.khach.getCccd());
         holder.binding.tvKhachthue.setText("Khách thuê :" +item.khach.getTenKhach());
-        holder.binding.tvPhongtro.setText("Phòng: " + item.room.getSoPhong()); // Hiển thị số phòng
+
         if (item.room != null) {
             holder.binding.tvPhongtro.setText("Phòng: " + item.room.getSoPhong());
         } else {

@@ -8,9 +8,15 @@
     tools:context=".SignInActivity"
     android:padding="20sp"
     android:gravity="center"
+    android:background="@color/white1"
     android:orientation="vertical">
 
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/account"
+        android:layout_marginBottom="100dp"
+        />
     <EditText
         android:id="@+id/edtEmail"
         android:layout_width="match_parent"
@@ -18,8 +24,8 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:textColor="@color/black"
-        android:padding="10dp"
-        android:background="@drawable/btnmain"
+        android:padding="12dp"
+        android:background="@drawable/btnlogin"
         android:imeOptions="actionNext"
         android:maxLength="100"
         />
@@ -31,10 +37,10 @@
         android:inputType="textPassword"
         android:textColor="@color/black"
         android:imeOptions="actionDone"
-        android:padding="10dp"
-        android:background="@drawable/btnmain"
+        android:padding="12dp"
+        android:background="@drawable/btnlogin"
         android:maxLength="100"
-        android:layout_marginTop="10sp"
+        android:layout_marginTop="15sp"
         />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_sign_in"

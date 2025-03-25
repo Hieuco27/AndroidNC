@@ -2,12 +2,9 @@ package com.example.navigationfragment.action;
 
 import static android.app.PendingIntent.getActivity;
 
-import static java.security.AccessController.getContext;
-
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.navigationfragment.AppDatabase;
@@ -17,10 +14,15 @@ import com.example.navigationfragment.entity.RoomEntity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class AddRoom extends AppCompatActivity {
     ActivityAddRoomBinding binding;
     private RoomDAO roomDAO;
     private DatabaseReference roomRef;
+    private ExecutorService executorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class AddRoom extends AppCompatActivity {
         // Khởi tạo Room Database và Firebase
         roomDAO = AppDatabase.getInstance(this).roomDao();
         roomRef = FirebaseDatabase.getInstance().getReference("rooms");
+        executorService= Executors.newSingleThreadExecutor();
         binding.btnThem.setOnClickListener(v -> {
             addRoom();
         });
@@ -46,28 +49,44 @@ public class AddRoom extends AppCompatActivity {
         }
 
         try {
+
             double giaPhong = Double.parseDouble(binding.edtGiaphong.getText().toString().trim());
             double giaDien = Double.parseDouble(binding.edtGiadien.getText().toString().trim());
             double giaNuoc = Double.parseDouble(binding.edtGianuoc.getText().toString().trim());
             double giaDichVu = Double.parseDouble(binding.edtGiadv.getText().toString().trim());
 
-            RoomEntity room = new RoomEntity(soPhong, giaPhong, giaDien, giaNuoc, giaDichVu,false);
 
-            new Thread(() -> {
-
+            executorService.execute(() -> {
+                RoomEntity existingRoom = roomDAO.getRoomBySoPhongSync(soPhong);
+                if (existingRoom != null) {
+                    runOnUiThread(() -> Toast.makeText(this, "Phòng đã tồn tại!", Toast.LENGTH_SHORT).show());
+                    return;
+                }
+                String roomId = UUID.randomUUID().toString();
+                RoomEntity room = new RoomEntity(roomId,soPhong, giaPhong, giaDien, giaNuoc, giaDichVu,false);
                 roomDAO.insert(room);
+                roomRef.child(roomId).setValue(room);
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "Thêm phòng thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Thêm phòng thành công: " + soPhong, Toast.LENGTH_SHORT).show();
                     finish();
                 });
 
-                roomRef.child(soPhong).setValue(room);
-            }).start();
+
+            });
+
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Vui lòng nhập đúng định dạng số", Toast.LENGTH_SHORT).show();
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Đóng ExecutorService để tránh rò rỉ tài nguyên
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
+    }
 }
 
 

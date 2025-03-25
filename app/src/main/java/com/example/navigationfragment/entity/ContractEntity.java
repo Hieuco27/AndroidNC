@@ -1,56 +1,75 @@
 package com.example.navigationfragment.entity;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "contract"
-,foreignKeys = {
-        @ForeignKey(entity = RoomEntity.class,
-                parentColumns = "id",
-                childColumns = "roomId", onDelete = ForeignKey.CASCADE),
-        @ForeignKey(entity = KhachEntity.class,
-                parentColumns = "khachId",
-                childColumns ="khachId",onDelete = ForeignKey.CASCADE),
-})
-public class ContractEntity {
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
-    private int contractId;
+import java.io.Serializable;
 
-    private int roomId;
+@Entity(
+        tableName = "contracts",
+        foreignKeys = {
+                @ForeignKey(
+                        entity = RoomEntity.class,
+                        parentColumns = "id",
+                        childColumns = "roomId",
+                        onDelete = ForeignKey.CASCADE
+                ),
+                @ForeignKey(
+                        entity = KhachEntity.class,
+                        parentColumns = "khachId",
+                        childColumns = "khachId",
+                        onDelete = ForeignKey.CASCADE
+                )
+        }
+)
+public class ContractEntity implements Serializable {
+
+    @PrimaryKey
+    @NonNull
+    private String contractId;
+
+    @ColumnInfo(name = "roomId")
+    private String roomId;
+
+    @ColumnInfo(name = "khachId")
     private String khachId;
     private String startDate;
     private String endDate;
     private int numberOfGuests;
     private int numberOfCars;
     private double totalAmount;
+    @ColumnInfo(name = "isStatus")
     private boolean isStatus;
 
-    public ContractEntity(int contractId, String endDate, boolean isStatus, String khachId, int numberOfCars, int numberOfGuests, int roomId, String startDate, double totalAmount) {
-        this.contractId = contractId;
-        this.endDate = endDate;
-        this.isStatus = isStatus;
-        this.khachId = khachId;
-        this.numberOfCars = numberOfCars;
-        this.numberOfGuests = numberOfGuests;
-        this.roomId = roomId;
-        this.startDate = startDate;
-        this.totalAmount = totalAmount;
+
+
+    public ContractEntity() {
+
     }
-    public String getKhachId() {
-        return khachId;
+    public ContractEntity(@NonNull String contractId, String roomId, String khachId, String startDate,
+                          String endDate, int numberOfGuests, int numberOfCars,
+                          double totalAmount, boolean isStatus) {
+        this.contractId = contractId;
+        this.roomId = roomId;
+        this.khachId = khachId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.numberOfGuests = numberOfGuests;
+        this.numberOfCars = numberOfCars;
+        this.totalAmount = totalAmount;
+        this.isStatus = isStatus;
     }
 
-    public void setKhachId(String khachId) {
-        this.khachId = khachId;
-    }
-    public int getContractId() {
+
+    @NonNull
+    public String getContractId() {
         return contractId;
     }
 
-    public void setContractId(int contractId) {
+    public void setContractId(@NonNull String contractId) {
         this.contractId = contractId;
     }
 
@@ -70,6 +89,14 @@ public class ContractEntity {
         isStatus = status;
     }
 
+    public String getKhachId() {
+        return khachId;
+    }
+
+    public void setKhachId(String khachId) {
+        this.khachId = khachId;
+    }
+
     public int getNumberOfCars() {
         return numberOfCars;
     }
@@ -86,11 +113,11 @@ public class ContractEntity {
         this.numberOfGuests = numberOfGuests;
     }
 
-    public int getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(int roomId) {
+    public void setRoomId(String roomId) {
         this.roomId = roomId;
     }
 
@@ -102,8 +129,6 @@ public class ContractEntity {
         this.startDate = startDate;
     }
 
-
-
     public double getTotalAmount() {
         return totalAmount;
     }
@@ -112,15 +137,12 @@ public class ContractEntity {
         this.totalAmount = totalAmount;
     }
 
-    public ContractEntity() {
-    }
-
     @Override
     public String toString() {
         return "ContractEntity{" +
-                "contractId=" + contractId +
-                ", roomId=" + roomId +
-                ", tenantId=" + khachId+
+                "contractId='" + contractId + '\'' +
+                ", roomId='" + roomId + '\'' +
+                ", khachId='" + khachId + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", numberOfGuests=" + numberOfGuests +

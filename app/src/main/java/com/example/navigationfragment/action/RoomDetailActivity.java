@@ -1,23 +1,27 @@
 package com.example.navigationfragment.action;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.Observer;
+
 import com.example.navigationfragment.AppDatabase;
 import com.example.navigationfragment.DAO.ContractDAO;
+import com.example.navigationfragment.DAO.KhachDAO;
 import com.example.navigationfragment.DAO.RoomDAO;
 import com.example.navigationfragment.databinding.ActivityXemttPhongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
-import com.example.navigationfragment.entity.RoomEntity;
 import com.example.navigationfragment.entity.KhachEntity;
+import com.example.navigationfragment.entity.RoomEntity;
 
 public class RoomDetailActivity extends AppCompatActivity {
+
     private ActivityXemttPhongBinding binding;
     private RoomEntity room;
+
     private RoomDAO roomDAO;
     private ContractDAO contractDAO;
+    private KhachDAO khachDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,22 +32,31 @@ public class RoomDetailActivity extends AppCompatActivity {
         // Khởi tạo DAO
         roomDAO = AppDatabase.getInstance(this).roomDao();
         contractDAO = AppDatabase.getInstance(this).contractDao();
+        khachDAO = AppDatabase.getInstance(this).khachDao();
 
         // Lấy dữ liệu từ Intent
         room = (RoomEntity) getIntent().getSerializableExtra("room");
+
         if (room == null) {
             Toast.makeText(this, "Không tìm thấy thông tin phòng!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
+        // Hiển thị thông tin phòng ban đầu
         displayRoomInfo();
 
-        // Nút Hủy
+        // Xử lý nút Hủy
         binding.btnHuy.setOnClickListener(v -> finish());
     }
+
     private void displayRoomInfo() {
-        // Hiển thị thông tin phòng
+        if (room == null) {
+            Toast.makeText(this, "Thông tin phòng không khả dụng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Hiển thị thông tin chi tiết phòng
         binding.edtSophong.setText(room.getSoPhong());
         binding.edtGiaphong.setText(String.valueOf(room.getGiaPhong()));
         binding.edtGiadien.setText(String.valueOf(room.getGiaDien()));
@@ -54,34 +67,58 @@ public class RoomDetailActivity extends AppCompatActivity {
         String trangThaiText = room.isTrangThai() ? "Trạng thái: Đã thuê" : "Trạng thái: Còn trống";
         binding.edtTrangthai.setText(trangThaiText);
 
-        contractDAO.getActiveContractByRoom(91).observe(this, contract -> {
-            if (contract != null) {
-                Log.d("DEBUG", "Lấy hợp đồng thành công: " + contract.toString());
-                String tenantId = contract.getKhachId();
+        // Lấy hợp đồng đang hoạt động của phòng này
+        contractDAO.getActiveContractByRoom(room.getId()).observe(this, new Observer<ContractEntity>() {
+            @Override
+            public void onChanged(ContractEntity contract) {
+                if (contract != null) {
+                    String tenantId = contract.getKhachId();
 
-                if (tenantId == null || tenantId.isEmpty()) {
-                    Log.e("ERROR", "Hợp đồng không có tenantId!");
-                    binding.edtNguoithue.setText("Người thuê: Chưa có");
-                    return;
-                }
-
-
-
-                AppDatabase.getInstance(this).khachDao().getTenantById(tenantId).observe(this, tenant -> {
-                    if (tenant != null) {
-                        Log.d("DEBUG", "Lấy khách thuê thành công: " + tenant.toString());
-                        binding.edtNguoithue.setText("Người thuê: " + tenant.getTenKhach());
-                    } else {
-                        Log.e("ERROR", "Không tìm thấy khách thuê với ID: " + tenantId);
+                    if (tenantId == null || tenantId.isEmpty()) {
                         binding.edtNguoithue.setText("Người thuê: Chưa có");
+                        return;
                     }
-                });
-            } else {
-                Log.e("ERROR", "Không tìm thấy hợp đồng đang hoạt động cho phòng ID: " + room.getId());
-                binding.edtNguoithue.setText("Người thuê: Chưa có");
+
+                    // Tìm thông tin khách thuê
+                    khachDAO.getTenantById(tenantId).observe(RoomDetailActivity.this, new Observer<KhachEntity>() {
+                        @Override
+                        public void onChanged(KhachEntity tenant) {
+                            if (tenant != null) {
+                                binding.edtNguoithue.setText("Người thuê: " + tenant.getTenKhach());
+                            } else {
+                                binding.edtNguoithue.setText("Người thuê: Chưa có");
+                            }
+                        }
+                    });
+
+                } else {
+                    binding.edtNguoithue.setText("Người thuê: Chưa có");
+                }
             }
         });
     }
 
-}
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (room == null) {
+            Toast.makeText(this, "Không có thông tin phòng để cập nhật!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Quan sát sự thay đổi của phòng để cập nhật UI
+        roomDAO.getRoomById(room.getId()).observe(this, new Observer<RoomEntity>() {
+            @Override
+            public void onChanged(RoomEntity updatedRoom) {
+                if (updatedRoom != null) {
+                    room = updatedRoom;
+                    displayRoomInfo();
+                } else {
+                    Toast.makeText(RoomDetailActivity.this, "Không thể cập nhật thông tin phòng!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+}

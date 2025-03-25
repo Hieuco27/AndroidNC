@@ -13,13 +13,14 @@ import com.example.navigationfragment.entity.ContractEntity;
 import com.example.navigationfragment.entity.KhachEntity;
 import com.example.navigationfragment.entity.RoomEntity;
 
-@Database(entities = {RoomEntity.class, KhachEntity.class, ContractEntity.class}, version = 1)
+@Database(entities = {RoomEntity.class, KhachEntity.class, ContractEntity.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
-    private static volatile AppDatabase INSTANCE;
+
 
     public abstract RoomDAO roomDao();
     public abstract KhachDAO khachDao();
     public abstract ContractDAO contractDao();
+    private static volatile AppDatabase INSTANCE;
 
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {

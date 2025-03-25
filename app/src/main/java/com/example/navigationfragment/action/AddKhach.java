@@ -1,10 +1,9 @@
 package com.example.navigationfragment.action;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
+
 import com.example.navigationfragment.AppDatabase;
 import com.example.navigationfragment.DAO.KhachDAO;
 import com.example.navigationfragment.DAO.RoomDAO;
@@ -13,6 +12,7 @@ import com.example.navigationfragment.entity.KhachEntity;
 import com.example.navigationfragment.entity.RoomEntity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,10 +35,20 @@ public class AddKhach extends AppCompatActivity {
         roomDAO = AppDatabase.getInstance(this).roomDao();
         khachRef = FirebaseDatabase.getInstance().getReference("khach");
 
-        // Chạy nền để thêm dữ liệu vào Room
-        executorService = Executors.newSingleThreadExecutor();
 
+        // Khởi tạo ExecutorService
+        executorService = Executors.newSingleThreadExecutor();
+        // Lấy dữ liệu số phòng từ Intent
+        String soPhong = getIntent().getStringExtra("SO_PHONG");
+
+        if (soPhong != null) {
+            binding.edtSophong.setText(soPhong);
+            binding.edtSophong.setEnabled(false);
+        }
         binding.btnThem.setOnClickListener(v -> addKhach());
+        binding.btnHuy.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void addKhach() {
@@ -52,44 +62,43 @@ public class AddKhach extends AppCompatActivity {
             return;
         }
 
-        if (!sdt.matches("^\\d{9}$")) {
-            Toast.makeText(this, "Số điện thoại phải có đúng 9 chữ số", Toast.LENGTH_SHORT).show();
+       /* if (!sdt.matches("^\\d{10}$")) {
+            Toast.makeText(this, "Số điện thoại phải có đúng 10 chữ số", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!cccd.matches("^\\d{12}$")) {
             Toast.makeText(this, "CCCD phải có đúng 12 chữ số", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
-        // Dùng getRoomBySoPhong() dưới dạng Single hoặc suspend để tránh mất dữ liệu khi Activity bị hủy
+        // Thêm dữ liệu trong luồng nền
         executorService.execute(() -> {
             RoomEntity room = roomDAO.getRoomBySoPhongSync(soPhong);
             if (room == null) {
-                runOnUiThread(() -> Toast.makeText(AddKhach.this, "Phòng không tồn tại!", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(this, "Phòng không tồn tại!", Toast.LENGTH_SHORT).show());
                 return;
             }
 
-            // Tạo ID khách hàng
+            // Tạo khachId bằng UUID
             String khachId = UUID.randomUUID().toString();
             KhachEntity khach = new KhachEntity(khachId, room.getId(), tenKhach, sdt, cccd);
-
-            // Chèn vào Room
             khachDAO.insert(khach);
+            khachRef.child(khachId).setValue(khach);
 
-            // Cập nhật Firebase
-            khachRef.child(khachId).setValue(khach)
-                    .addOnSuccessListener(aVoid -> Log.d("DEBUG_FIREBASE", "Thêm Firebase thành công: " + khachId))
-                    .addOnFailureListener(e -> Log.e("DEBUG_FIREBASE", "Lỗi Firebase: " + e.getMessage()));
-
-            // Hiển thị thông báo trên UI
             runOnUiThread(() -> {
-                Toast.makeText(AddKhach.this, "Thêm khách thành công!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Thêm khách thành công: " + tenKhach, Toast.LENGTH_SHORT).show();
                 finish();
             });
         });
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Đóng ExecutorService để tránh rò rỉ tài nguyên
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
+    }
 }

@@ -22,6 +22,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     public static  final String TAG="roomsheet";
     BottomSheetRoomBinding binding;
     private RoomEntity room;
+    private String soPhong;
     public BottomSheetFragment(){
     }
     public static BottomSheetFragment newInstance(RoomEntity room){
@@ -47,6 +48,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         binding.btnAddTenant.setOnClickListener(v -> {
             if (getActivity()!=null){
                 Intent intent=new Intent(getActivity(), AddKhach.class);
+                intent.putExtra("SO_PHONG", room.getSoPhong()); // Truyền số phòng qua Intent
+
                 startActivity(intent);
             }
 
@@ -62,6 +65,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         binding.btnAddcontract.setOnClickListener(v -> {
             if (getActivity()!=null){
                 Intent intent=new Intent(getActivity(), AddContract.class);
+                intent.putExtra("SO_PHONG", room.getSoPhong());
                 startActivity(intent);
             }
         });
