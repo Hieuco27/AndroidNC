@@ -64,12 +64,12 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Intent intent = new Intent(SignUpActivity.this,
-                                    MainActivity.class);
+                                    SignInActivity.class);
                             startActivity(intent);
                             finishAffinity();
 
                         } else {
-                            // If sign in fails, display a message to the user.
+                            // đăng nhập ko thành công hiển thị thông báo
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -79,7 +79,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    private void loginUser() {
+    /*private void loginUser() {
         String email = binding.edtEmail.getText().toString().trim();
         String password = binding.edtPassword.getText().toString().trim();
 
@@ -90,7 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         if (password.isEmpty() || password.length() < 6) {
-            binding.edtPassword.setError("Password must be at least 6 characters");
+            binding.edtPassword.setError("Mật khẩu phải có ít nhất 6 ký tự");
             binding.edtPassword.requestFocus();
             return;
         }
@@ -100,15 +100,15 @@ public class SignUpActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         if (user != null) {
-                            Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
                             // Navigate to MainActivity or Dashboard
                             startActivity(new Intent(this, MainActivity.class));
                             finish();
                         }
                     } else {
-                        Log.e("Login", "Login failed: " + task.getException().getMessage());
-                        Toast.makeText(this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("Login", "Đăng nhập không thành công " + task.getException().getMessage());
+                        Toast.makeText(this, "Đăng nhập không thành công: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
+    }*/
 }

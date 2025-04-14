@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.navigationfragment.action.AddContract;
+import com.example.navigationfragment.action.AddHoaDon;
 import com.example.navigationfragment.action.AddKhach;
 import com.example.navigationfragment.action.RoomDetailActivity;
 import com.example.navigationfragment.databinding.BottomSheetRoomBinding;
@@ -65,6 +66,13 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         binding.btnAddcontract.setOnClickListener(v -> {
             if (getActivity()!=null){
                 Intent intent=new Intent(getActivity(), AddContract.class);
+                intent.putExtra("SO_PHONG", room.getSoPhong());
+                startActivity(intent);
+            }
+        });
+        binding.btnAddbill.setOnClickListener(v -> {
+            if (getActivity()!=null){
+                Intent intent=new Intent(getActivity(), AddHoaDon.class);
                 intent.putExtra("SO_PHONG", room.getSoPhong());
                 startActivity(intent);
             }

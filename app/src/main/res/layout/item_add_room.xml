@@ -31,7 +31,9 @@
             android:layout_below="@id/imgHouse"
             android:layout_centerHorizontal="true"
             android:text="Phòng: 1"
-            android:textSize="14sp"
+            android:textSize="20dp"
+            android:fontFamily="cursive"
+
             android:textColor="@color/black"
             android:textStyle="bold"/>
 

@@ -11,27 +11,32 @@
         android:text="Thêm khách thuê"
         android:background="@drawable/btnmain"
         android:padding="15dp"
-        android:textSize="24sp"
+        android:textSize="28dp"
         android:gravity="center"
+        android:fontFamily="serif"
         android:textColor="@color/black" />
 
     <EditText
         android:id="@+id/edt_sophong"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_room"
         android:layout_marginTop="20dp"
-        android:padding="12dp"
+        android:background="@drawable/hoadon"
+        android:fontFamily="cursive"
         android:hint="Số phòng"
-        android:inputType="number" />
+        android:inputType="number"
+        android:padding="12dp"
+        android:textSize="20dp" />
 
     <EditText
         android:id="@+id/edt_tenkhach"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_room"
+        android:background="@drawable/hoadon"
         android:layout_marginTop="20dp"
         android:padding="12dp"
+        android:textSize="20dp"
+        android:fontFamily="cursive"
         android:hint="Tên khách thuê"
         android:inputType="text" />
 
@@ -39,9 +44,11 @@
         android:id="@+id/edt_sdt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_room"
+        android:background="@drawable/hoadon"
         android:layout_marginTop="20dp"
         android:padding="12dp"
+        android:textSize="20dp"
+        android:fontFamily="cursive"
         android:hint="Số điện thoại "
         android:inputType="number" />
 
@@ -49,10 +56,12 @@
         android:id="@+id/edt_cccd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_room"
+        android:background="@drawable/hoadon"
         android:layout_marginTop="20dp"
         android:padding="12dp"
         android:hint="Số căn cước"
+        android:textSize="20dp"
+        android:fontFamily="cursive"
         android:inputType="number" />
 
     <LinearLayout
@@ -67,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Thêm"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/pink"
             android:textColor="@color/white" />
 
         <Button
@@ -76,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Hủy"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/pink"
             android:textColor="@color/white"
             android:layout_marginStart="8dp" />
     </LinearLayout>

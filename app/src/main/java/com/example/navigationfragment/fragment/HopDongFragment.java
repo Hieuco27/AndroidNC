@@ -65,10 +65,7 @@ public class HopDongFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(contractAdapter);
 
-        contractDAO.getAllContracts().observe(getViewLifecycleOwner(), contracts -> {
-            Log.d("FragmentContract", "Số lượng hợp đồng: " + contracts.size());
-            contractAdapter.setContractList(contracts);  // Cập nhật dữ liệu lên RecyclerView
-        });
+
         observeContractData();
         // Đồng bộ dữ liệu từ Firebase
         fetchContractsFromFirebase();

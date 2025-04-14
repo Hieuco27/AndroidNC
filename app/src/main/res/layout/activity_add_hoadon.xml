@@ -1,6 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btnmain"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:text="Tạo Hoá đơn "
+        android:textSize="28dp" />
+    <TextView
+        android:id="@+id/tv_phong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="cursive"
+        android:text="Phòng :"
+        android:textSize="24dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="cursive"
+        android:text="Tên hóa đơn :"
+        android:textSize="20dp" />
+    <EditText
+        android:id="@+id/edt_tenhoadon"
+        android:layout_width="match_parent"
+        android:background="@drawable/hoadon"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"
+        android:text="Ngày tạo " />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/hoadon"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_calendar"
+            android:layout_marginEnd="8dp" />
+        <EditText
+            android:id="@+id/edt_ngayTao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:hint="Chọn ngày tạo"
+            android:fontFamily="cursive"
+            android:clickable="true"
+            android:background="@android:color/transparent"
+            android:textSize="16sp" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhập số điện   "
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="cursive"/>
+    <EditText
+        android:id="@+id/edt_sodien"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/hoadon"
+        android:textSize="20dp"
+        android:padding="5dp"
+        android:fontFamily="cursive"
+        android:layout_marginTop="10dp"
+        android:hint="Số điện"
+        android:inputType="number"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhập số nước   "
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="cursive"/>
+    <EditText
+        android:id="@+id/edt_sonuoc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Số nước "
+        android:layout_marginTop="10dp"
+        android:fontFamily="cursive"
+        android:padding="5dp"
+        android:background="@drawable/hoadon"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/btn_tinhTong"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:text="Tính tổng"
+            android:fontFamily="cursive"
+            android:backgroundTint="@color/pink"
+            android:layout_marginEnd="8dp" />
+        <TextView
+            android:id="@+id/tvt_tongTien"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Tổng tiền: 0 VNĐ"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="cursive"
+        android:text="Ghi chú"/>
+    <EditText
+        android:id="@+id/edt_ghichu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/hoadon"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:hint="Ghi chú"
+        />
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:layout_marginTop="10dp"
+        android:text="Đã thanh toán "/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="8dp">
+        <Button
+            android:id="@+id/btn_them"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="100dp"
+            android:backgroundTint="@color/pink"
+            android:fontFamily="cursive"
+            android:textSize="18sp"
+            android:text="Thêm" />
+
+        <Button
+            android:id="@+id/btnHuy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/pink"
+            android:fontFamily="cursive"
+            android:textSize="18sp"
+            android:text="Hủy" />
+    </LinearLayout>
 
 </LinearLayout>
