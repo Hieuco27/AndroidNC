@@ -34,6 +34,7 @@ Xuất báo cáo dạng bảng hoặc biểu đồ.
 
 
 // PHÁT TRIỂN THÊM Ở TƯƠNG LAI
+
 🌐 Đăng ký tạm trú online:
 Gửi thông tin khách thuê lên dịch vụ công.
 Lưu trữ thông tin để tra cứu.
@@ -93,6 +94,7 @@ Xem báo cáo: Kiểm tra thu chi trong mục "Báo cáo".
 
 
 📁 Cấu trúc dự án
+
 ├── app
 │   ├── src
 │   │   ├── main
@@ -113,6 +115,7 @@ Xem báo cáo: Kiểm tra thu chi trong mục "Báo cáo".
 
 Hiện tại: Quản lý cơ bản (phòng, khách, hóa đơn).
 Tương lai:
+
 🖨️ Xuất hóa đơn PDF.
 💳 Tích hợp thanh toán online (Momo, ZaloPay).
 🌍 Hỗ trợ đa ngôn ngữ.
