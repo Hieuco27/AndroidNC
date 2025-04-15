@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
@@ -15,8 +16,9 @@ import java.util.List;
 
 @Dao
 public interface HoaDonDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(HoaDonEntity hoaDon);
+
     @Update
     void update(HoaDonEntity hoaDon);
     @Delete
@@ -36,11 +38,18 @@ public interface HoaDonDAO {
     @Query("SELECT * FROM hoadon WHERE hopdongId = :hopdongId")
     LiveData<List<HoaDonEntity>> getHoaDonByHopDongId(String hopdongId);
 
+    @Transaction
+    @Query("SELECT * FROM hoadon")
+    LiveData<List<HoaDonWithRoom>> getAllHoaDonWithRoom();
+
+
+
+    /*@Transaction
     @Query("SELECT hoadon.hoaDonId, hoadon.tenHoaDon, hoadon.ngayTao, hoadon.soDien, hoadon.soNuoc, hoadon.tongTien, hoadon.ghiChu, hoadon.daThanhToan, rooms.soPhong, rooms.giaPhong, rooms.giaDien, rooms.giaNuoc, rooms.giaDichVu " +
             "FROM hoadon " +
             "INNER JOIN contracts ON hoadon.hopdongId = contracts.contractId " +
             "INNER JOIN rooms ON contracts.roomId = rooms.id")
-    LiveData<List<HoaDonWithRoom>> getAllHoaDonWithRoom();
+    LiveData<List<HoaDonWithRoom>> getAllHoaDonWithRoom();*/
 
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NavigationFragment</string>
+    <string name="app_name">Quản Lý Trọ</string>
     <string name="nav_phong">Quản lý phòng</string>
     <string name="nav_khach">Khách thuê </string>
     <string name="nav_hopdong">Hợp đồng</string>

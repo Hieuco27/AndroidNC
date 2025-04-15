@@ -39,6 +39,9 @@ public interface ContractDAO {
     @Transaction
     @Query("SELECT * FROM contracts")
     LiveData<List<ContractEntity>> getAllContracts();
+    // trả về danh sách đồng bộ ko dùng livedata
+    @Query("SELECT * FROM contracts")
+    List<ContractEntity> getAllContractsSync();
 
     @Update
     void update(ContractEntity contract);
@@ -48,6 +51,7 @@ public interface ContractDAO {
 
     @Query("DELETE FROM contracts")
     void deleteAll();
+
 
     @Query("SELECT c.*, r.soPhong, k.tenKhach " +
             "FROM contracts c " +

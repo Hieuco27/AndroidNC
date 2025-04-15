@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.navigationfragment.AppDatabase;
 import com.example.navigationfragment.DAO.ContractDAO;
@@ -35,80 +34,100 @@ import java.util.concurrent.Executors;
 public class HopDongFragment extends Fragment {
     private FragmentHopdongBinding binding;
     private ContractAdapter contractAdapter;
-    private List<ContractEntity> contractList = new ArrayList<>();
     private ContractDAO contractDAO;
     private RoomDAO roomDAO;
     private KhachDAO khachDAO;
-    private ContractEntity contract;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference contractRef;
     private ExecutorService executorService;
-    private ChildEventListener constactListener;
+    private ChildEventListener contractListener;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding= FragmentHopdongBinding.inflate(inflater,container,false);
+        binding = FragmentHopdongBinding.inflate(inflater, container, false);
 
+        // Init DB + DAO
         contractDAO = AppDatabase.getInstance(getContext()).contractDao();
         roomDAO = AppDatabase.getInstance(getContext()).roomDao();
-
         khachDAO = AppDatabase.getInstance(getContext()).khachDao();
-
         executorService = Executors.newSingleThreadExecutor();
 
-        // Khởi tạo Firebase
+        // Firebase
         firebaseDatabase = FirebaseDatabase.getInstance();
         contractRef = firebaseDatabase.getReference("contracts");
-        // Khởi tạo Adapter
-        contractAdapter = new ContractAdapter( getContext());
-        RecyclerView recyclerView = binding.rcv;
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(contractAdapter);
 
+        // Adapter
+        contractAdapter = new ContractAdapter(requireContext());
+        binding.rcv.setAdapter(contractAdapter);
+        binding.rcv.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+        // Swipe to Refresh
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            loadContracts(); // Reload from Room
+            binding.swipeRefresh.setRefreshing(false);
+        });
+
+        // Chỉ observe LiveData 1 lần khi tạo View
         observeContractData();
-        // Đồng bộ dữ liệu từ Firebase
+
+        // Đồng bộ từ Firebase -> Room
         fetchContractsFromFirebase();
 
         return binding.getRoot();
     }
 
-    private  void observeContractData(){
+    // Chỉ observe LiveData 1 lần
+    private void observeContractData() {
         contractDAO.getAllContracts().observe(getViewLifecycleOwner(), contracts -> {
             if (contracts != null) {
-                contractList.clear();
-                contractList.addAll(contracts);
+                contractAdapter.setContractList(contracts);
                 contractAdapter.notifyDataSetChanged();
-                Log.d("FragmentContract", "Số lượng hợp đồng: " + contracts.size());
+                Log.d("HopDongFragment", "Số hợp đồng lấy được: " + contracts.size());
             }
         });
     }
+
+    // Gọi lại khi onResume hoặc swipe
+    private void loadContracts() {
+        executorService.execute(() -> {
+            List<ContractEntity> contracts = contractDAO.getAllContractsSync(); // Thêm phương thức này vào DAO
+            requireActivity().runOnUiThread(() -> {
+                contractAdapter.setContractList(contracts);
+                contractAdapter.notifyDataSetChanged();
+            });
+        });
+    }
+
     private void fetchContractsFromFirebase() {
-        constactListener = new ChildEventListener() {
+        contractListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 ContractEntity newContract = snapshot.getValue(ContractEntity.class);
-                if (newContract != null) {
-                    executorService.execute(() -> {
+                executorService.execute(() -> {
+                    RoomEntity room = roomDAO.getRoomByIdSync(newContract.getRoomId());
+                    KhachEntity khach = khachDAO.getKhachByIdSync(newContract.getKhachId());
+
+                    if (room != null && khach != null) {
                         contractDAO.insert(newContract);
-                        Log.d("ContractSync", "Thêm hợp đồng thành công: " + newContract.getContractId());
-                    });
-                }
+                        Log.d("ContractSync", "Đã insert hợp đồng: " + newContract.getContractId());
+                    } else {
+                        Log.e("ContractSync", "Không thể insert contract vì thiếu Room hoặc Khách");
+                    }
+                });
             }
+
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 ContractEntity updatedContract = snapshot.getValue(ContractEntity.class);
                 if (updatedContract != null) {
-                    executorService.execute(() -> {
-                        contractDAO.update(updatedContract);
-                    });
+                    executorService.execute(() -> contractDAO.update(updatedContract));
                 }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 ContractEntity deletedContract = snapshot.getValue(ContractEntity.class);
-
                 if (deletedContract != null) {
                     executorService.execute(() -> {
                         contractDAO.delete(deletedContract);
@@ -117,33 +136,26 @@ public class HopDongFragment extends Fragment {
                 }
             }
 
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override public void onCancelled(@NonNull DatabaseError error) {}
         };
-        contractRef.addChildEventListener(constactListener);
+        contractRef.addChildEventListener(contractListener);
     }
 
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadContracts(); // luôn load lại khi quay lại Fragment
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (constactListener != null) {
-            contractRef.removeEventListener(constactListener);
+        if (contractListener != null) {
+            contractRef.removeEventListener(contractListener);
         }
         if (executorService != null && !executorService.isShutdown()) {
             executorService.shutdown();
         }
     }
-
 }

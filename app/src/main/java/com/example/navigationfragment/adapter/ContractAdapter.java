@@ -24,6 +24,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
         this.contractList = new ArrayList<>();
     }
 
+
     // Constructor mới: nhận Context và danh sách contractList ban đầu
     public ContractAdapter(Context context, List<ContractEntity> contractList) {
         this.context = context;
@@ -31,12 +32,12 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     }
 
 
-    // Hàm cập nhật list khi observe từ LiveData
     public void setContractList(List<ContractEntity> contractList) {
+        this.contractList.clear();
         if (contractList != null) {
-            this.contractList = contractList;
-            notifyDataSetChanged();
+            this.contractList.addAll(contractList);
         }
+        notifyDataSetChanged();
     }
 
     public void updateData(List<ContractEntity> contractList) {
@@ -46,7 +47,6 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
         }
         notifyDataSetChanged();
     }
-
 
     @NonNull
     @Override

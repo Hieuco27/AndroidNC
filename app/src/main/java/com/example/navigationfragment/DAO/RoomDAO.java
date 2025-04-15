@@ -29,11 +29,12 @@ public interface RoomDAO {
     @Query("SELECT id FROM rooms WHERE soPhong = :soPhong LIMIT 1")
     String getRoomIdBySoPhong(String soPhong);
 
-    @Query("SELECT * FROM rooms WHERE id = :roomId LIMIT 1")
+    @Query("SELECT * FROM rooms WHERE id = :roomId  LIMIT 1")
     RoomEntity getRoomByIdSync(String roomId);
 
     @Query("SELECT * FROM rooms WHERE id = :roomId")
     LiveData<RoomEntity> getRoomById(String roomId);
+
 
     @Query("SELECT * FROM rooms WHERE soPhong = :soPhong LIMIT 1")
     RoomEntity getRoomBySoPhongSync(String soPhong);
@@ -57,7 +58,7 @@ public interface RoomDAO {
     void delete(RoomEntity room);
 
     @Query("DELETE FROM rooms WHERE id = :id")
-    void deleteRoomById(String id); // ✅ Đổi int thành String
+    void deleteRoomById(String id);
 
     // Xóa phòng theo số phòng
     @Query("DELETE FROM rooms WHERE soPhong = :soPhong")

@@ -1,20 +1,25 @@
 package com.example.navigationfragment.entity;
 
+import androidx.room.Embedded;
+import androidx.room.Relation;
+
 public class HoaDonWithRoom {
-    public String hoaDonId;
-    public String tenHoaDon;
-    public String ngayTao;
-    public int soDien;
-    public int soNuoc;
-    public double tongTien;
-    public boolean daThanhToan;
-    public String ghiChu;
+    @Embedded
+    public HoaDonEntity hoaDon;
 
+    @Relation(
+            parentColumn = "hopdongId",
+            entityColumn = "contractId",
+            entity = ContractEntity.class
+    )
+    public ContractEntity contract;
 
-    public String soPhong;
-    public double giaPhong;
-    public double giaDien;
-    public double giaNuoc;
-    public Double giaDichVu;
-    public Boolean trangThai;
+    @Relation(
+            parentColumn = "roomId",
+            entityColumn = "id",
+            entity = RoomEntity.class
+
+    )
+    public RoomEntity room;
 }
+

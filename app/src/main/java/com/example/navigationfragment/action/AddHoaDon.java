@@ -2,6 +2,7 @@ package com.example.navigationfragment.action;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.example.navigationfragment.entity.RoomEntity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +34,7 @@ public class AddHoaDon extends AppCompatActivity {
     private double giaPhong = 0;
     private double giaDien = 0;
     private double giaNuoc = 0;
+    private double giaDichVu=0;
     private String roomId="";
 
     @Override
@@ -53,8 +56,6 @@ public class AddHoaDon extends AppCompatActivity {
             binding.tvPhong.setText("Phòng: " + soPhong);
             binding.tvPhong.setEnabled(false);
             loadRoomInfoBySoPhong(soPhong);  // Gọi để hiển thị giá điện nước
-
-
         }
 
         // Chọn ngày
@@ -69,36 +70,45 @@ public class AddHoaDon extends AppCompatActivity {
         // Hủy
         binding.btnHuy.setOnClickListener(v -> finish());
     }
-
     private void loadRoomInfoBySoPhong(String soPhong) {
         new Thread(() -> {
             // Lấy danh sách hợp đồng
-            List<ContractEntity> contracts = (List<ContractEntity>) contractDAO.getAllContracts();
-
+            List<ContractEntity> contracts = contractDAO.getAllContractsSync();
             for (ContractEntity contract : contracts) {
-                RoomEntity room = roomDAO.getRoomById(contract.getRoomId()).getValue();
-
+                RoomEntity room = roomDAO.getRoomByIdSync(contract.getRoomId());
                 if (room != null && room.getSoPhong().equals(soPhong)) {
+                    giaPhong = room.getGiaPhong();
+                    giaDien = room.getGiaDien();
+                    giaNuoc = room.getGiaNuoc();
+                    giaDichVu= room.getGiaDichVu();
+                    roomId = room.getId(); // Gán để lưu vào hóa đơn
+
                     runOnUiThread(() -> {
-                        binding.edtSodien.setText(String.valueOf(room.getGiaDien()));
-                        binding.edtSonuoc.setText(String.valueOf(room.getGiaNuoc()));
+                        Log.d("AddHoaDon", "Gia Phong: " + giaPhong + ", Gia Dien: " + giaDien + ", Gia Nuoc: " + giaNuoc);
+
+                        binding.edtSodien.setText("0");
+                        binding.edtSonuoc.setText("0");
                     });
-                    break;
                 }
+
             }
         }).start();
     }
-
     private void tinhTongTien() {
         try {
             int soDien = Integer.parseInt(binding.edtSodien.getText().toString());
             int soNuoc = Integer.parseInt(binding.edtSonuoc.getText().toString());
 
+            double tienDichVu= giaDichVu;
             double tienDien = giaDien * soDien;
             double tienNuoc = giaNuoc * soNuoc;
-            double tong = giaPhong + tienDien + tienNuoc;
+            double thanhTien = giaPhong + tienDien + tienNuoc + tienDichVu;
+            Log.d("AddHoaDon", "Tien Dien: " + tienDien + ", Tien Nuoc: " + tienNuoc + ", Tong: " + thanhTien);
 
-            binding.tvtTongTien.setText("Tổng tiền: " + tong + " VNĐ");
+            // Tính tổng tiền
+            DecimalFormat formatter = new DecimalFormat("#,###");
+            String formatted = formatter.format(thanhTien);
+            binding.tvtTongTien.setText("Tổng tiền: " + formatted + " VNĐ");
         } catch (Exception e) {
             Toast.makeText(this, "Vui lòng nhập đúng số điện nước", Toast.LENGTH_SHORT).show();
         }
@@ -109,6 +119,11 @@ public class AddHoaDon extends AppCompatActivity {
         String ngayTao = binding.edtNgayTao.getText().toString().trim();
         String ghiChu = binding.edtGhichu.getText().toString().trim();
         boolean daThanhToan = binding.checkbox.isChecked();
+
+        if (tenHoaDon.isEmpty() || ngayTao.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đủ tên hóa đơn và ngày tạo", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         int soDien = Integer.parseInt(binding.edtSodien.getText().toString());
         int soNuoc = Integer.parseInt(binding.edtSonuoc.getText().toString());

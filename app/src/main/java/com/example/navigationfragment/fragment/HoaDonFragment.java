@@ -1,6 +1,7 @@
 package com.example.navigationfragment.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.navigationfragment.AppDatabase;
 import com.example.navigationfragment.DAO.ContractDAO;
@@ -57,7 +59,9 @@ public class HoaDonFragment extends Fragment {
 
         //khởi ta adapter
         hoaDonAdapter = new HoaDonAdapter(hoaDonList, getContext());
+        binding.rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rcv.setAdapter(hoaDonAdapter);
+
 
 
         observeHoaDonData();
@@ -67,11 +71,10 @@ public class HoaDonFragment extends Fragment {
         return binding.getRoot();
     }
     private void observeHoaDonData(){
-        hoaDonDAO.getAllHoaDonWithRoom().observe(getViewLifecycleOwner(), hoaDons -> {
-            if (hoaDons != null) {
-                hoaDonList.clear();
-                hoaDonList.addAll(hoaDons);
-                hoaDonAdapter.notifyDataSetChanged();
+        hoaDonDAO.getAllHoaDonWithRoom().observe(getViewLifecycleOwner(), hoaDon -> {
+            if (hoaDon != null) {
+                hoaDonAdapter.upDateData(hoaDon);
+                Log.d("FragmentContract", "Số lượng hợp đồng: " + hoaDon.size());
             }
         });
     }
