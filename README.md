@@ -95,21 +95,21 @@ Xem báo cáo: Kiểm tra thu chi trong mục "Báo cáo".
 
 📁 Cấu trúc dự án
 
-├── app
-│   ├── src
-│   │   ├── main
-│   │   │   ├── java/com/example/navigationfragment
-│   │   │   │   ├── activity      # 🎨 MainActivity, RoomActivity,...
-                ├── action        # AddRoom, AddKhach ,.....
-│   │   │   │   ├── adapter       # 🔄 RecyclerView Adapter        
-│   │   │   │   ├── entity        # 🗂️ Room, Tenant, Invoice,...
-│   │   │   │   ├── DAO           # 💾 RoomDao, DAO
-│   │   │   │   ├── fragment     # 📑 PhongFragment, KhachFragment,...
-│   │   │   ├── res
-│   │   │   │   ├── layout       # 🖼️ XML giao diện
-│   │   │   │   ├── values       # 🎨 Theme, string, color
-│   ├── build.gradle             # ⚙️ Dependencies
-├── README.md                    # 📜 File này
+- app
+  - src
+    - main
+      - java/com/example/navigationfragment
+        - activity      # MainActivity, RoomActivity,...
+        - action        # AddRoom, AddKhach,...
+        - adapter       # RecyclerView Adapter
+        - entity        # Room, Tenant, Invoice,...
+        - DAO           # RoomDao, DAO
+        - fragment      # PhongFragment, KhachFragment,...
+      - res
+        - layout       # XML giao diện
+        - values       # Theme, string, color
+  - build.gradle             # Dependencies
+- README.md                    # File này
 
 🔮 Kế hoạch phát triển
 
