@@ -66,7 +66,6 @@ public class AddHoaDon extends AppCompatActivity {
 
         // Lưu hóa đơn
         binding.btnThem.setOnClickListener(v -> addHoaDon());
-
         // Hủy
         binding.btnHuy.setOnClickListener(v -> finish());
     }

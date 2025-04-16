@@ -56,13 +56,10 @@ public class HoaDonFragment extends Fragment {
         hoaDonRef = firebaseDatabase.getReference("hoadon");
 
 
-
         //khởi ta adapter
         hoaDonAdapter = new HoaDonAdapter(hoaDonList, getContext());
         binding.rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rcv.setAdapter(hoaDonAdapter);
-
-
 
         observeHoaDonData();
         // Lấy dữ liệu từ Firebase

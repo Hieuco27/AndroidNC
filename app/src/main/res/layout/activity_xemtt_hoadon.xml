@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!-- Nội dung hóa đơn  -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Tiêu đề -->
+                <TextView
+                    android:id="@+id/tv_tenHoaDon"
+                    android:text="THÔNG BÁO HÓA ĐƠN"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:background="#F9C46A"
+                    android:textColor="#000000"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!-- Thông tin cơ bản -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_soPhong"
+                        android:text="Số phòng: 501"
+                        android:textSize="16dp"
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tv_tenKhach"
+                        android:text="Tên: Hằng"
+                        android:textSize="16dp"
+
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tv_soNguoi"
+                        android:text="Số người ở: 3"
+                        android:textSize="16dp"
+
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"/>
+                    <TextView
+                        android:text="Tháng: 4/2024"
+                        android:textSize="16dp"
+
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"/>
+                    <TextView
+                        android:textSize="16dp"
+
+                        android:text="Địa chỉ: Số 66 ngõ 734 Kim Giang"
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"/>
+                </LinearLayout>
+
+                <!-- Diễn giải nội dung -->
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:text="DIỄN GIẢI NỘI DUNG"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:background="#B6E6CB"
+                    android:padding="8dp"
+                    android:layout_marginTop="12dp" />
+
+                <!-- Dịch vụ phòng -->
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:text="Dịch Vụ Phòng"
+                    android:textStyle="bold"
+                    android:background="#FFF066"
+                    android:padding="6dp"
+                    android:gravity="center"
+                    android:layout_marginTop="4dp" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*"
+                    android:background="#EEEEEE"
+                    android:padding="4dp">
+
+                    <TableRow>
+                        <TextView android:text="Tên" android:textStyle="bold" />
+                        <TextView android:text="Số Lượng" android:textStyle="bold" />
+                        <TextView android:text="Đơn Vị" android:textStyle="bold" />
+                        <TextView android:text="Đơn Giá" android:textStyle="bold" />
+                        <TextView android:text="Thành Tiền" android:textStyle="bold" />
+                    </TableRow>
+
+                    <!-- Dữ liệu -->
+                    <TableRow>
+                        <TextView android:text="Tiền phòng" />
+                        <TextView android:text="1" />
+                        <TextView android:text="Phòng" />
+                        <TextView
+                            android:id="@+id/tv_giaPhong"
+                            android:text="3.200.000đ" />
+                        <TextView
+                            android:id="@+id/tv_tongGiaPhong"
+                            android:text="3.200.000đ" />
+                    </TableRow>
+
+
+                    <TableRow>
+                        <TextView android:text="Dịch vụ" />
+                        <TextView android:text="1" />
+                        <TextView android:text="Phòng" />
+                        <TextView
+                            android:id="@+id/tv_giaDichVu"
+                            android:text="100.000đ" />
+                        <TextView
+                            android:id="@+id/tv_tongDichVu"
+                            android:text="100.000đ" />
+                    </TableRow>
+                </TableLayout>
+
+                <!-- Điện nước -->
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:text="Điện Nước"
+                    android:textStyle="bold"
+                    android:background="#ADD8E6"
+                    android:padding="6dp"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*"
+                    android:background="#EEEEEE"
+                    android:padding="4dp">
+
+                    <TableRow>
+                        <TextView android:text="Tên" android:textStyle="bold" />
+                        <TextView android:text="Số Lượng" android:textStyle="bold" />
+                        <TextView android:text="Đơn Vị" android:textStyle="bold" />
+                        <TextView android:text="Đơn Giá" android:textStyle="bold" />
+                        <TextView android:text="Thành Tiền" android:textStyle="bold" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="Điện" />
+                        <TextView
+                            android:id="@+id/tv_soDien"
+                            android:text="114" />
+                        <TextView android:text="Số" />
+                        <TextView
+                            android:id="@+id/tv_giaDien"
+                            android:text="4.000đ" />
+                        <TextView
+                            android:id="@+id/tv_tongDien"
+                            android:text="456.000đ" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="Nước" />
+                        <TextView
+                            android:id="@+id/tv_soNuoc"
+                            android:text="6" />
+                        <TextView android:text="Khối" />
+                        <TextView
+                            android:id="@+id/tv_giaNuoc"
+                            android:text="30.000đ" />
+                        <TextView
+                            android:id="@+id/tv_tongNuoc"
+                            android:text="180.000đ" />
+                    </TableRow>
+                </TableLayout>
+
+                <!-- Số liệu cũ/mới -->
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="Số liệu cũ/mới:"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp" />
+
+
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="Số điện mới: 7.405
+                     Số nước mới: 249" />
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="Số điện cũ: 7.291
+                    Số nước cũ: 243" />
+
+                <!-- Tổng tiền -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="#FF0000"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Tổng Số Tiền"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_tongSoTien"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="4.086.000đ"
+                        android:textColor="#FFFF00"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Chuyển khoản -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <!-- Text content on the left -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="vertical"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thông tin chuyển khoản:"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số TK: 1903 6193 3450 13"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chủ TK: Thái Văn Hiếu"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ngân hàng: Techcombank"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_ghiChu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nội dung: Phòng 501 Nha Tro Hieu"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="4dp"
+                            android:text="Nộp tiền từ ngày 1-5. Phạt 200k/ngày chậm nộp tiền như thỏa thuận"
+                            android:textColor="#FF0000"
+                            android:textSize="13sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                    <!-- QR code on the right -->
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/maqr"
+                        android:contentDescription="QR Code"
+                        android:padding="4dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/maqr" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="32dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_send_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:backgroundTint="#2196F3"
+                        android:textSize="18dp"
+                        android:text="Gửi tin nhắn"
+                        android:textColor="#FFFFFF" />
+
+                    <Button
+                        android:id="@+id/btn_save_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#4CAF50"
+                        android:textSize="18dp"
+                        android:text="Lưu ảnh màn hình"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -43,8 +43,8 @@ public class RoomDetailActivity extends AppCompatActivity {
             return;
         }
 
-        // Hiển thị thông tin phòng ban đầu
-        displayRoomInfo();
+        /*// Hiển thị thông tin phòng ban đầu
+        displayRoomInfo();*/
 
         // Xử lý nút Hủy
         binding.btnHuy.setOnClickListener(v -> finish());
@@ -109,15 +109,12 @@ public class RoomDetailActivity extends AppCompatActivity {
         }
 
         // Quan sát sự thay đổi của phòng để cập nhật UI
-        roomDAO.getRoomById(room.getId()).observe(this, new Observer<RoomEntity>() {
-            @Override
-            public void onChanged(RoomEntity updatedRoom) {
-                if (updatedRoom != null) {
-                    room = updatedRoom;
-                    displayRoomInfo();
-                } else {
-                    Toast.makeText(RoomDetailActivity.this, "Không thể cập nhật thông tin phòng!", Toast.LENGTH_SHORT).show();
-                }
+        roomDAO.getRoomById(room.getId()).observe(this, updatedRoom -> {
+            if (updatedRoom != null) {
+                room = updatedRoom;
+                displayRoomInfo(); // Chỉ hiển thị sau khi lấy đúng room từ Room DB
+            } else {
+                Toast.makeText(RoomDetailActivity.this, "Không thể cập nhật thông tin phòng!", Toast.LENGTH_SHORT).show();
             }
         });
     }

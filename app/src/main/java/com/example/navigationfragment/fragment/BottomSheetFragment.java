@@ -32,7 +32,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         bundle.putSerializable(TAG, (Serializable) room);
         fragment.setArguments(bundle);
         return fragment;
-
     }
 
 
