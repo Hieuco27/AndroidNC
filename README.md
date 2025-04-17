@@ -62,7 +62,7 @@ Kết nối internet (nếu dùng Firebase/API)
 
 📦 Hướng dẫn cài đặt
 
-Clone repository:git clone https://github.com/<Hieuco27>/<AndroidNC>.git
+Clone repository:git clone [https://github.com/<Hieuco27>/<AndroidNC>.git](https://github.com/Hieuco27/AndroidNC.git)
 
 
 Mở dự án:
