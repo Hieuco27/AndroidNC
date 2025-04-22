@@ -1,137 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="28sp"
-        android:fontFamily="serif"
-        android:text="Tạo Hợp Đồng"
-        android:textColor="@color/blue"
-        android:padding="10dp"
-        android:paddingBottom="20dp"
-        android:background="@drawable/btnmain"
-         />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/white">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tạo Hợp Đồng"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/blue"
+            android:padding="12dp"
+            android:background="@drawable/btnmain" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:padding="8dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btnhopdong">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tên phòng trọ"
+                android:textStyle="bold" />
             <EditText
-                android:id="@+id/edt_sophong"
+                android:id="@+id/edt_soPhong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Số phòng"
-                android:padding="10dp"
-                android:textSize="20dp"
-                android:fontFamily="cursive"
                 android:background="@drawable/hoadon"
-                android:layout_marginBottom="10dp" />
+                android:hint="Trọ A 4"
+                android:padding="12dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="10dp"/>
 
-            <Spinner
-                android:id="@+id/spinner_tenkhach"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Chọn khách"
-                android:padding="10dp"
-                android:fontFamily="cursive"
-                android:background="@drawable/hoadon"
-                android:layout_marginBottom="10dp" />
+        </LinearLayout>
 
-            <EditText
-                android:id="@+id/edt_startdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ngày bắt đầu"
-                android:padding="10dp"
-                android:fontFamily="cursive"
-                android:textSize="20dp"
-
-                android:background="@drawable/hoadon"
-                android:layout_marginBottom="10dp" />
-
-            <EditText
-                android:id="@+id/edt_enddate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ngày kết thúc"
-                android:padding="10dp"
-                android:textSize="20dp"
-                android:fontFamily="cursive"
-
-                android:background="@drawable/hoadon"
-                android:layout_marginBottom="10dp" />
-
-            <EditText
-                android:id="@+id/edt_nguoio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Số người ở"
-                android:padding="10dp"
-                android:textSize="20dp"
-                android:fontFamily="cursive"
-                android:background="@drawable/hoadon"
-                android:layout_marginBottom="10dp" />
-
-            <EditText
-                android:id="@+id/edt_car"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Số lượng xe"
-                android:padding="10dp"
-                android:textSize="20dp"
-                android:fontFamily="cursive"
-
-                android:background="@drawable/hoadon"
-                android:layout_marginBottom="10dp" />
-
-            <EditText
-                android:id="@+id/edt_coc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tiền đặt cọc"
-                android:padding="10dp"
-                android:textSize="20dp"
-                android:fontFamily="cursive"
-                android:background="@drawable/hoadon"
-                android:layout_marginBottom="10dp" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:elevation="4dp"
+            android:radius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:background="@drawable/btnhopdong">
 
-                <Button
-                    android:id="@+id/btn_themcontract"
-                    android:layout_width="0dp"
+                <!-- Tên người thuê -->
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Thêm"
-                    android:backgroundTint="@color/pink"
-                    android:textColor="@android:color/white"
-                    android:padding="10dp" />
+                    android:text="Tên người thuê"
+                    android:textStyle="bold"/>
+                <Spinner
+                    android:id="@+id/spinnerTenkhach"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/hoadon"
+                    android:padding="12dp"
+                    android:layout_marginBottom="10dp"/>
 
-                <Button
-                    android:id="@+id/btn_huy"
-                    android:layout_width="0dp"
+                <!-- Thời hạn hợp đồng -->
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Hủy"
-                    android:backgroundTint="@color/pink"
-                    android:textColor="@android:color/white"
-                    android:layout_marginStart="8dp"
-                    android:padding="10dp" />
+                    android:text="Ngày bắt đầu"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/edt_Startdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="4"
+                    android:background="@drawable/hoadon"
+                    android:padding="12dp"
+                    android:inputType="number"
+                    android:layout_marginBottom="10dp"/>
+
+
+
+                <!-- Ngày hết hợp đồng -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày hết hợp đồng"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/edt_Enddate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="20/11/2023"
+                    android:background="@drawable/hoadon"
+                    android:padding="12dp"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:layout_marginBottom="10dp"/>
+
+                <!-- Ngày hết hợp đồng -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Số người ở"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/edt_Nguoio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=" Số ở "
+                    android:background="@drawable/hoadon"
+                    android:padding="12dp"
+                    android:inputType="number"
+                    android:layout_marginBottom="10dp"/>
+                <!-- Ngày hết hợp đồng -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Số lượng xe "
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/edt_Car"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Số xe "
+                    android:background="@drawable/hoadon"
+                    android:padding="12dp"
+                    android:inputType="number"
+                    android:layout_marginBottom="10dp"/>
+                <!-- Tiền cọc -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tiền cọc"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/edtTienCoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="500"
+                    android:inputType="number"
+                    android:background="@drawable/hoadon"
+                    android:padding="12dp"
+                    android:layout_marginBottom="10dp"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Còn hợp đồng"/>
             </LinearLayout>
-        </LinearLayout>
 
-</LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_Themcontract"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Them"
+                android:backgroundTint="@color/pink"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnHuy"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Hủy"
+                android:backgroundTint="@color/pink"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

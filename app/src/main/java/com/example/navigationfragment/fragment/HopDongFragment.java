@@ -131,10 +131,10 @@ public class HopDongFragment extends Fragment {
                 if (deletedContract != null) {
                     executorService.execute(() -> {
                         contractDAO.delete(deletedContract);
-                        Log.d("ContractSync", "Đã xóa hợp đồng: " + deletedContract.getContractId());
                     });
                 }
             }
+
 
             @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override public void onCancelled(@NonNull DatabaseError error) {}

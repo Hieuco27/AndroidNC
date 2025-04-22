@@ -5,9 +5,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -19,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -49,6 +53,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int DOANHTHU_FRAGMENT = 4;
     private static final int MYPROFILE_FRAGMENT = 5;
     private static final int CHANGEPASSWORD_FRAGMENT = 6;
+
+    // set ảnh hiển thị trên header layout
+
+    private int[] backgrounds = {
+            R.drawable.nav1,
+            R.drawable.nav2,
+            R.drawable.nav3,
+            R.drawable.nav4
+    };
+    private int currentBackground = 0;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable backgroundRunnable ;
+    private LinearLayoutCompat headerLayout;
+
 
     private int mCurrentFragment = PHONG_FRAGMENT;
     final private MyProfileFragment mMyProfileFragment = new MyProfileFragment();
@@ -94,9 +112,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mCurrentFragment = PHONG_FRAGMENT;setTitle("Quản lý trọ");
 
         binding.navigationView.getMenu().findItem(R.id.nav_phong).setCheckable(true);
+        // Lấy header layout trong navigation view
+        View headerView = binding.navigationView.getHeaderView(0);
+        headerLayout = headerView.findViewById(R.id.header_layout);
+        // set background slide
+        startBackgroundSlideshow();
         showUserInformation();
     }
 
+    private  void startBackgroundSlideshow(){
+        backgroundRunnable = new Runnable() {
+            @Override
+            public void run() {
+                headerLayout.setBackgroundResource(backgrounds[currentBackground]);
+                currentBackground = (currentBackground + 1) % backgrounds.length; // lặp lại từ đầu
+                handler.postDelayed(this, 3000); // lặp lại sau 3 giây
+            }
+        };
+        handler.post(backgroundRunnable); // bắt đầu chạy lần đầu
+    }
     private void setupDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.toolbar,
                 R.string.nav_drawer_open, R.string.nav_drawer_close);
@@ -209,5 +243,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.setAction(Intent.ACTION_GET_CONTENT);
         mActivityResultLauncher.launch(Intent.createChooser(intent,"Select Picture"));
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (backgroundRunnable != null) {
+            handler.removeCallbacks(backgroundRunnable);
+        }
     }
 }

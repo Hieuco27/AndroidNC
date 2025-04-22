@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.navigationfragment.DAO.RoomDAO;
 import com.example.navigationfragment.databinding.ItemAddHopdongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
+import com.example.navigationfragment.entity.RoomEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
 
     private List<ContractEntity> contractList;
     private Context context;
+    private RoomDAO roomDAO;
 
     // Constructor hiện tại: chỉ nhận Context, khởi tạo contractList rỗng
     public ContractAdapter(Context context) {
@@ -26,9 +29,10 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
 
 
     // Constructor mới: nhận Context và danh sách contractList ban đầu
-    public ContractAdapter(Context context, List<ContractEntity> contractList) {
+    public ContractAdapter(Context context, List<ContractEntity> contractList, RoomDAO roomDAO) {
         this.context = context;
         this.contractList = (contractList != null) ? contractList : new ArrayList<>();
+        this.roomDAO= roomDAO;
     }
 
 
@@ -61,6 +65,11 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
         if (contract == null) {
             return;
         }
+        /*RoomEntity room= roomDAO.getRoomByIdSync(contract.getRoomId());
+        if(room!=null)
+        {
+            holder.binding.tvHopdong.setText("Phòng" + room.getSoPhong());
+        }*/
 
         // Gán dữ liệu
         holder.binding.tvHopdong.setText("1. Hợp đồng phòng: " + contract.getRoomId());

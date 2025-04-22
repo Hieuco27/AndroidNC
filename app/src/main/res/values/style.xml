@@ -17,4 +17,9 @@
         <item name="android:padding">12sp</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="NavMenuTextStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#614C32</item>
+    </style>
+
 </resources>

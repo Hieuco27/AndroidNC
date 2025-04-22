@@ -64,8 +64,8 @@ public class AddContract extends AppCompatActivity {
 
         String soPhong = getIntent().getStringExtra("SO_PHONG");
         if (soPhong != null) {
-            binding.edtSophong.setText(soPhong);
-            binding.edtSophong.setEnabled(false);
+            binding.edtSoPhong.setText(soPhong);
+            binding.edtSoPhong.setEnabled(false);
         }
 
         binding.btnThemcontract.setOnClickListener(v -> addContract());
@@ -89,7 +89,7 @@ public class AddContract extends AppCompatActivity {
     }
 
     private void addContract() {
-        String soPhong = binding.edtSophong.getText().toString().trim();
+        String soPhong = binding.edtSoPhong.getText().toString().trim();
         int selectedPosition = binding.spinnerTenkhach.getSelectedItemPosition();
         if (selectedPosition == -1) {
             Toast.makeText(this, "Vui lòng chọn khách thuê!", Toast.LENGTH_SHORT).show();

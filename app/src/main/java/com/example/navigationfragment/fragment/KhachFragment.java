@@ -108,7 +108,7 @@ public class KhachFragment extends Fragment {
                 if (deletedKhach != null) {
                     String khachId = deletedKhach.getKhachId();
                     executorService.execute(() -> {
-                        khachDAO.delete(khachId);
+                        khachDAO.delete(String.valueOf(deletedKhach));
 
                     });
                 }

@@ -22,7 +22,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/add"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -42,6 +42,9 @@
         android:layout_gravity="start"
         android:background="@android:color/white"
         app:headerLayout="@layout/layout_hearder_nav"
-        app:menu="@menu/menu_nav"/>
+        app:menu="@menu/menu_nav"
+        app:itemVerticalPadding="20dp"
+        app:itemIconTint="@null"
+        app:itemTextAppearance="@style/NavMenuTextStyle"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -71,28 +71,34 @@ public class AddHoaDon extends AppCompatActivity {
     }
     private void loadRoomInfoBySoPhong(String soPhong) {
         new Thread(() -> {
-            // Lấy danh sách hợp đồng
             List<ContractEntity> contracts = contractDAO.getAllContractsSync();
             for (ContractEntity contract : contracts) {
                 RoomEntity room = roomDAO.getRoomByIdSync(contract.getRoomId());
-                if (room != null && room.getSoPhong().equals(soPhong)) {
+
+                Log.d("DEBUG", "Contract: " + contract.getRoomId() +
+                        " | Room: " + (room != null ? room.getSoPhong() : "null"));
+
+                if (room != null && room.getSoPhong().equalsIgnoreCase(soPhong)) {
                     giaPhong = room.getGiaPhong();
                     giaDien = room.getGiaDien();
                     giaNuoc = room.getGiaNuoc();
-                    giaDichVu= room.getGiaDichVu();
-                    roomId = room.getId(); // Gán để lưu vào hóa đơn
+                    giaDichVu = room.getGiaDichVu();
+                    roomId = room.getId();
 
                     runOnUiThread(() -> {
-                        Log.d("AddHoaDon", "Gia Phong: " + giaPhong + ", Gia Dien: " + giaDien + ", Gia Nuoc: " + giaNuoc);
-
                         binding.edtSodien.setText("0");
                         binding.edtSonuoc.setText("0");
                     });
+                    return;
                 }
-
             }
+
+            runOnUiThread(() ->
+                    Toast.makeText(this, "Không tìm thấy thông tin phòng để tính tiền!", Toast.LENGTH_SHORT).show()
+            );
         }).start();
     }
+
     private void tinhTongTien() {
         try {
             int soDien = Integer.parseInt(binding.edtSodien.getText().toString());

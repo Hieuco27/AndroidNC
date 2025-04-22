@@ -23,6 +23,8 @@ public interface HoaDonDAO {
     void update(HoaDonEntity hoaDon);
     @Delete
     void delete(HoaDonEntity hoaDon);
+    @Query( "DELETE FROM hoadon")
+    void deleteAllHoaDon();
 
     @Query("SELECT * FROM hoadon")
     List<HoaDonEntity> getAll();

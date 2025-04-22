@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/header_layout"
     android:layout_width="match_parent"
-    android:layout_height="180sp"
+    android:layout_height="230sp"
     android:orientation="vertical"
     android:gravity="bottom"
     android:padding="10sp"
-
     android:background="@drawable/nav">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_avatar"
-        android:layout_width="80sp"
-        android:layout_height="80sp"
+        android:layout_width="90sp"
+        android:layout_height="90sp"
         android:src="@drawable/ic_avartar_defaul"/>
     <TextView
         android:id="@+id/tv_name"

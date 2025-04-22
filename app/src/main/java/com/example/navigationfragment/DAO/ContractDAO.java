@@ -27,6 +27,9 @@ public interface ContractDAO {
     @Query("SELECT * FROM contracts WHERE roomId = :roomId AND isStatus = 1 LIMIT 1")
     LiveData<ContractEntity> getActiveContractByRoom(String roomId);
 
+    @Query("SELECT * FROM contracts WHERE roomId = :roomId LIMIT 1")
+    ContractEntity getContractByRoomId(String roomId);
+
 
     @Query("SELECT * FROM contracts WHERE isStatus = 1 LIMIT 1")
     ContractEntity getActiveContract();

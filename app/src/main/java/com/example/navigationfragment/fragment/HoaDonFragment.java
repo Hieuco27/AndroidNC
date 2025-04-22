@@ -1,10 +1,12 @@
 package com.example.navigationfragment.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,6 +66,35 @@ public class HoaDonFragment extends Fragment {
         observeHoaDonData();
         // Lấy dữ liệu từ Firebase
         fetchHoaDonDataFromFirebase();
+
+        binding.btnXoa.setOnClickListener(v -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Xác nhận xoá")
+                    .setMessage("Bạn có chắc chắn muốn xoá?")
+                    .setPositiveButton("Xoá", (dialog, which) -> {
+                        hoaDonRef.removeValue()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        Log.d("PhongFragment", "Đã xoá tất cả trên Firebase");
+                                        // Xoá dữ liệu trong Room DB
+                                        executorService.execute(() -> {
+                                            hoaDonDAO.deleteAllHoaDon();
+                                            requireActivity().runOnUiThread(() -> {
+                                                Toast.makeText(requireContext(), "Đã xoá hóa đơn", Toast.LENGTH_SHORT).show();
+                                                // Có thể cập nhật lại UI ở đây nếu cần
+                                            });
+                                        });
+                                    } else {
+                                        Log.e("PhongFragment", "Xoá trên Firebase thất bại");
+                                    }
+                                })
+                                .addOnFailureListener(e ->
+                                        Log.e("PhongFragment", "Lỗi khi xoá Firebase: " + e.getMessage())
+                                );
+                    })
+                    .setNegativeButton("Huỷ", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
 
         return binding.getRoot();
     }
