@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_giahan"
+        android:title="Gia hạn hợp đồng" />
+    <item
+        android:id="@+id/menu_chamdut"
+        android:title="Chấm dứt hợp đồng" />
+    <item
+        android:id="@+id/menu_khoiphuc"
+        android:title="Khôi phục hợp đồng" />
+</menu>
+

@@ -14,4 +14,5 @@ public class KhachWithRoom {
             entityColumn = "id"
     )
     public RoomEntity room;
+
 }

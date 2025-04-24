@@ -18,6 +18,7 @@ import com.example.navigationfragment.DAO.RoomDAO;
 import com.example.navigationfragment.adapter.ContractAdapter;
 import com.example.navigationfragment.databinding.FragmentHopdongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
+import com.example.navigationfragment.entity.ContractWithDetails;
 import com.example.navigationfragment.entity.KhachEntity;
 import com.example.navigationfragment.entity.RoomEntity;
 import com.google.firebase.database.ChildEventListener;
@@ -41,16 +42,18 @@ public class HopDongFragment extends Fragment {
     private DatabaseReference contractRef;
     private ExecutorService executorService;
     private ChildEventListener contractListener;
+    private List<ContractWithDetails> contractList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHopdongBinding.inflate(inflater, container, false);
 
-        // Init DB + DAO
-        contractDAO = AppDatabase.getInstance(getContext()).contractDao();
-        roomDAO = AppDatabase.getInstance(getContext()).roomDao();
-        khachDAO = AppDatabase.getInstance(getContext()).khachDao();
+        // Init Room DB + DAO
+        AppDatabase db = AppDatabase.getInstance(getContext());
+        contractDAO = db.contractDao();
+        roomDAO = db.roomDao();
+        khachDAO = db.khachDao();
         executorService = Executors.newSingleThreadExecutor();
 
         // Firebase
@@ -58,7 +61,13 @@ public class HopDongFragment extends Fragment {
         contractRef = firebaseDatabase.getReference("contracts");
 
         // Adapter
-        contractAdapter = new ContractAdapter(requireContext());
+        contractAdapter = new ContractAdapter(
+                getContext(),
+                contractList,
+                roomDAO,
+                contractDAO,
+                khachDAO
+        );
         binding.rcv.setAdapter(contractAdapter);
         binding.rcv.setLayoutManager(new LinearLayoutManager(requireContext()));
 
@@ -77,27 +86,26 @@ public class HopDongFragment extends Fragment {
         return binding.getRoot();
     }
 
-    // Chỉ observe LiveData 1 lần
+    // Quan sát LiveData để cập nhật danh sách hợp đồng
     private void observeContractData() {
-        contractDAO.getAllContracts().observe(getViewLifecycleOwner(), contracts -> {
+        contractDAO.getAllContractsWithDetails().observe(getViewLifecycleOwner(), contracts -> {
             if (contracts != null) {
-                contractAdapter.setContractList(contracts);
-                contractAdapter.notifyDataSetChanged();
+                contractAdapter.updateData(contracts);
                 Log.d("HopDongFragment", "Số hợp đồng lấy được: " + contracts.size());
             }
         });
     }
 
-    // Gọi lại khi onResume hoặc swipe
+
     private void loadContracts() {
         executorService.execute(() -> {
-            List<ContractEntity> contracts = contractDAO.getAllContractsSync(); // Thêm phương thức này vào DAO
+            List<ContractWithDetails> contracts =  contractDAO.getAllContractsSync1(); // Tạo hàm mới này trong DAO
             requireActivity().runOnUiThread(() -> {
-                contractAdapter.setContractList(contracts);
-                contractAdapter.notifyDataSetChanged();
+                contractAdapter.updateData(contracts); // hoặc setContractList(contracts)
             });
         });
     }
+
 
     private void fetchContractsFromFirebase() {
         contractListener = new ChildEventListener() {

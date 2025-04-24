@@ -44,7 +44,13 @@ public class ContractEntity implements Serializable {
     @ColumnInfo(name = "isStatus")
     private boolean isStatus;
 
+    public boolean isStatus() {
+        return isStatus;
+    }
 
+    public void setStatus(boolean status) {
+        isStatus = status;
+    }
 
     public ContractEntity() {
 
@@ -81,13 +87,7 @@ public class ContractEntity implements Serializable {
         this.endDate = endDate;
     }
 
-    public boolean isStatus() {
-        return isStatus;
-    }
 
-    public void setStatus(boolean status) {
-        isStatus = status;
-    }
 
     public String getKhachId() {
         return khachId;

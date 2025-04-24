@@ -23,8 +23,6 @@
         android:background="@drawable/hoadon"
         android:layout_marginTop="20dp"
         android:padding="12dp"
-
-        android:fontFamily="cursive"
         android:textSize="20dp"
         android:hint="Số phòng"
         android:inputType="number" />
@@ -37,7 +35,6 @@
         android:layout_marginTop="20dp"
         android:padding="12dp"
         android:textSize="20dp"
-        android:fontFamily="cursive"
         android:hint="Giá tiền phòng"
         android:inputType="numberDecimal" />
 
@@ -50,7 +47,6 @@
         android:padding="12dp"
 
         android:textSize="20dp"
-        android:fontFamily="cursive"
         android:hint="Giá điện"
         android:inputType="numberDecimal" />
 
@@ -62,7 +58,6 @@
         android:layout_marginTop="20dp"
         android:padding="12dp"
         android:textSize="20dp"
-        android:fontFamily="cursive"
         android:hint="Giá nước"
         android:inputType="numberDecimal" />
 
@@ -74,7 +69,6 @@
         android:layout_marginTop="20dp"
         android:padding="12dp"
         android:textSize="20dp"
-        android:fontFamily="cursive"
         android:hint="Giá dịch vụ "
         android:inputType="numberDecimal" />
 

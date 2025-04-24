@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="blue">#031F83</color>
+    <color name="expired">#FF6666</color> <!-- Màu đỏ cho hết hiệu lực -->
+    <color name="valid">#66FF66</color> <!-- Màu xanh cho còn hiệu lực -->
+    <color name="blue">#1345FA</color>
     <color name="red">#F65959</color>
     <color name="yellow">#EFC492</color>
     <color name="drack">#03ED0D</color>
@@ -13,8 +13,21 @@
     <color name="cmain">#121212</color>
     <color name="blue2">#8687E7</color>
     <color name="white1">#BABBF4</color>
-    <color name="hoadon">#EDD64B</color>
-    <color name="hopdong">#F0E59E</color>
+    <color name="hoadon">#FFF9C4</color>
+    <color name="hopdong1">#F0E59E</color>
+    <color name= "khachthue">#F8BBD0</color>
+    <color name= "hopdong">#C8E6C9</color>
+    <color name="primary_color">#4CAF50</color>
+    <color name="secondary_color">#F44336</color>
+    <color name="light_background">#F0F0F0</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="hint_text">#BDBDBD</color>
+    <color name="border_color">#E0E0E0</color>
+    <color name="white_text">#FFFFFF</color>
+    <color name="text_hopdong">	#2E7D32</color>
 
 
 

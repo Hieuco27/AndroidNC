@@ -170,8 +170,6 @@ public class PhongFragment extends Fragment {
                 }
             }
 
-
-
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 // Không xử lý

@@ -21,6 +21,8 @@
         tools:targetApi="31">
 
 
+        <activity android:name=".action.KhachDetail"
+            android:exported="false"/>
         <activity
             android:name=".action.HoaDonDetail"
             android:exported="false" />

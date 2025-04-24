@@ -64,13 +64,14 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.HoaDonView
 
 
 
-            holder.binding.tvHoadon.setText("Tên hóa đơn: " + hoaDon.getTenHoaDon());
+        holder.binding.tvStt.setText(String.valueOf(position + 1));
+        holder.binding.tvHoadon.setText(". Tên hóa đơn : " + hoaDon.getTenHoaDon());
             holder.binding.tvThanhtien.setText(String.format("%,.0fđ", hoaDon.getTongTien()));
-            holder.binding.tvTienphong.setText("Tiền phòng: " + String.format("%,.0fđ", room.getGiaPhong()));
-            holder.binding.tvDichvu.setText("Tổng dịch vụ: " + String.format("%,.0fđ", room.getGiaDichVu()));
-            holder.binding.tvDiennuoc.setText("Tiền điện nước: " + String.format("%,.0fđ", tienDienNuoc));
-            holder.binding.tvTrangthai.setText("Trạng thái: " + (hoaDon.isDaThanhToan() ? "Đã thanh toán" : "Chưa thanh toán"));
-            holder.binding.tvGhichu.setText("Ghi chú: " + hoaDon.getGhiChu());
+            holder.binding.tvTienphong.setText("Tiền phòng : " + String.format("%,.0fđ", room.getGiaPhong()));
+            holder.binding.tvDichvu.setText("Tổng dịch vụ : " + String.format("%,.0fđ", room.getGiaDichVu()));
+            holder.binding.tvDiennuoc.setText("Tiền điện nước : " + String.format("%,.0fđ", tienDienNuoc));
+            holder.binding.tvTrangthai.setText("Trạng thái : " + (hoaDon.isDaThanhToan() ? "Đã thanh toán" : "Chưa thanh toán"));
+            holder.binding.tvGhichu.setText("Ghi chú : " + hoaDon.getGhiChu());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent= new Intent(context, HoaDonDetail.class);

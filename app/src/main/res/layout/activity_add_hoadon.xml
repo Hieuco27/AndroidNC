@@ -19,14 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:fontFamily="cursive"
         android:text="Phòng :"
         android:textSize="24dp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:fontFamily="cursive"
         android:text="Tên hóa đơn :"
         android:textSize="20dp" />
     <EditText
@@ -39,7 +37,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
         android:layout_marginTop="5dp"
         android:textSize="20dp"
         android:text="Ngày tạo " />
@@ -64,7 +61,6 @@
             android:layout_weight="1"
             android:padding="5dp"
             android:hint="Chọn ngày tạo"
-            android:fontFamily="cursive"
             android:clickable="true"
             android:background="@android:color/transparent"
             android:textSize="16sp" />
@@ -75,7 +71,7 @@
         android:text="Nhập số điện   "
         android:textSize="20dp"
         android:layout_marginTop="10dp"
-        android:fontFamily="cursive"/>
+        />
     <EditText
         android:id="@+id/edt_sodien"
         android:layout_width="match_parent"
@@ -83,7 +79,6 @@
         android:background="@drawable/hoadon"
         android:textSize="20dp"
         android:padding="5dp"
-        android:fontFamily="cursive"
         android:layout_marginTop="10dp"
         android:hint="Số điện"
         android:inputType="number"/>
@@ -93,14 +88,13 @@
         android:text="Nhập số nước   "
         android:textSize="20dp"
         android:layout_marginTop="10dp"
-        android:fontFamily="cursive"/>
+        />
     <EditText
         android:id="@+id/edt_sonuoc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Số nước "
         android:layout_marginTop="10dp"
-        android:fontFamily="cursive"
         android:padding="5dp"
         android:background="@drawable/hoadon"/>
     <LinearLayout
@@ -117,7 +111,6 @@
             android:layout_weight="1"
             android:textSize="20dp"
             android:text="Tính tổng"
-            android:fontFamily="cursive"
             android:backgroundTint="@color/pink"
             android:layout_marginEnd="8dp" />
         <TextView
@@ -135,7 +128,6 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
-        android:fontFamily="cursive"
         android:text="Ghi chú"/>
     <EditText
         android:id="@+id/edt_ghichu"
@@ -150,7 +142,6 @@
         android:id="@+id/checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
         android:layout_marginTop="10dp"
         android:text="Đã thanh toán "/>
     <LinearLayout
@@ -166,7 +157,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="100dp"
             android:backgroundTint="@color/pink"
-            android:fontFamily="cursive"
             android:textSize="18sp"
             android:text="Thêm" />
 
@@ -175,7 +165,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/pink"
-            android:fontFamily="cursive"
             android:textSize="18sp"
             android:text="Hủy" />
     </LinearLayout>

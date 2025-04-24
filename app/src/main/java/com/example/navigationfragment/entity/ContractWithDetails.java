@@ -2,38 +2,24 @@ package com.example.navigationfragment.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
+import androidx.room.Relation;
 
 public class ContractWithDetails {
-    @Embedded
-    public ContractEntity contract;
 
-    @ColumnInfo(name = "soPhong")
-    public String soPhong;
 
-    @ColumnInfo(name = "tenKhach")
-    public String tenKhach;
+        @Embedded
+        public ContractEntity contract;
 
-    public ContractEntity getContract() {
-        return contract;
-    }
+        @Relation(
+                parentColumn = "roomId",
+                entityColumn = "id"
+        )
+        public RoomEntity room;
 
-    public void setContract(ContractEntity contract) {
-        this.contract = contract;
-    }
+        @Relation(
+                parentColumn = "khachId",
+                entityColumn = "khachId"
+        )
+        public KhachEntity khach;
 
-    public String getSoPhong() {
-        return soPhong;
-    }
-
-    public void setSoPhong(String soPhong) {
-        this.soPhong = soPhong;
-    }
-
-    public String getTenKhach() {
-        return tenKhach;
-    }
-
-    public void setTenKhach(String tenKhach) {
-        this.tenKhach = tenKhach;
-    }
 }

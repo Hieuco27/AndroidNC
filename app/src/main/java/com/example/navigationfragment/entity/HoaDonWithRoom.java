@@ -7,12 +7,15 @@ public class HoaDonWithRoom {
     @Embedded
     public HoaDonEntity hoaDon;
 
+
     @Relation(
             parentColumn = "hopdongId",
             entityColumn = "contractId",
             entity = ContractEntity.class
     )
     public ContractEntity contract;
+
+
 
     @Relation(
             parentColumn = "roomId",

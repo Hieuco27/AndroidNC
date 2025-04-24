@@ -2,136 +2,181 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/cardView"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    android:background="@color/gray">
-    <RelativeLayout
+    app:cardElevation="4dp">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pink"
-        android:padding="10sp">
+        android:background="@color/hopdong"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <!-- Tiêu đề và menu -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_stt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_hopdong" />
+
+            <TextView
+                android:id="@+id/tv_hopdong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/tv_stt"
+                android:layout_marginStart="4dp"
+                android:text=" Hợp đồng phòng 1 :"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_hopdong" />
+
+            <ImageView
+                android:id="@+id/btn_menu"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_chamdut"
+                android:contentDescription="Menu" />
+        </RelativeLayout>
+
+        <!-- Thông tin khách thuê -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_person" />
+
             <TextView
-                android:id="@+id/tv_hopdong"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:fontFamily="cursive"
-                android:text="1. Hợp đồng phòng 1 :"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_person"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_khachthue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Người thuê :"
-                    android:textSize="20dp"
-                    android:fontFamily="cursive"
-
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="10dp"/>
-
-            </LinearLayout>
-            <LinearLayout
+                android:id="@+id/tv_khachthue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_date"
-                    />
-                <TextView
-                    android:id="@+id/tv_datestart"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Ngày bắt đầu :"
-                    android:textSize="20dp"
-                    android:fontFamily="cursive"
-
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"/>
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_date"/>
-                <TextView
-                    android:id="@+id/tv_dateend"
-                    android:textSize="20dp"
-                    android:fontFamily="cursive"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Ngày kết thúc : "
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_person"/>
-                <TextView
-                    android:id="@+id/tv_nguoio"
-                    android:textSize="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Số người ở : "
-                    android:fontFamily="cursive"
-
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_car"/>
-                <TextView
-                    android:id="@+id/tv_car"
-                    android:textSize="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Số lượng xe :"
-                    android:fontFamily="cursive"
-
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"/>
-
-            </LinearLayout>
-
-
+                android:layout_marginStart="10dp"
+                android:text="Người thuê :"
+                android:textSize="18sp"
+                android:textColor="@color/text_hopdong" />
         </LinearLayout>
 
-    </RelativeLayout>
+        <!-- Ngày bắt đầu -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
 
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_date" />
+
+            <TextView
+                android:id="@+id/tv_datestart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Ngày bắt đầu :"
+                android:textSize="18sp"
+                android:textColor="@color/text_hopdong" />
+        </LinearLayout>
+
+        <!-- Ngày kết thúc -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_date" />
+
+            <TextView
+                android:id="@+id/tv_dateend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Ngày kết thúc :"
+                android:textSize="18sp"
+                android:textColor="@color/text_hopdong" />
+        </LinearLayout>
+
+        <!-- Số người ở -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_person" />
+
+            <TextView
+                android:id="@+id/tv_nguoio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Số người ở :"
+                android:textSize="18sp"
+                android:textColor="@color/text_hopdong" />
+        </LinearLayout>
+
+        <!-- Số lượng xe -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_bike" />
+
+            <TextView
+                android:id="@+id/tv_car"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Số lượng xe :"
+                android:textSize="18sp"
+                android:textColor="@color/text_hopdong" />
+        </LinearLayout>
+
+        <!-- Nút trạng thái căn phải -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_check_status"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:background="@drawable/rounded_primary_button"
+                android:backgroundTint="@null"
+                android:text="Trạng thái"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -57,13 +57,10 @@ public class AddHoaDon extends AppCompatActivity {
             binding.tvPhong.setEnabled(false);
             loadRoomInfoBySoPhong(soPhong);  // Gọi để hiển thị giá điện nước
         }
-
         // Chọn ngày
         binding.edtNgayTao.setOnClickListener(v -> showDatePicker());
-
         // Tính tổng
         binding.btnTinhTong.setOnClickListener(v -> tinhTongTien());
-
         // Lưu hóa đơn
         binding.btnThem.setOnClickListener(v -> addHoaDon());
         // Hủy
@@ -92,7 +89,6 @@ public class AddHoaDon extends AppCompatActivity {
                     return;
                 }
             }
-
             runOnUiThread(() ->
                     Toast.makeText(this, "Không tìm thấy thông tin phòng để tính tiền!", Toast.LENGTH_SHORT).show()
             );
@@ -108,7 +104,6 @@ public class AddHoaDon extends AppCompatActivity {
             double tienDien = giaDien * soDien;
             double tienNuoc = giaNuoc * soNuoc;
             double thanhTien = giaPhong + tienDien + tienNuoc + tienDichVu;
-            Log.d("AddHoaDon", "Tien Dien: " + tienDien + ", Tien Nuoc: " + tienNuoc + ", Tong: " + thanhTien);
 
             // Tính tổng tiền
             DecimalFormat formatter = new DecimalFormat("#,###");

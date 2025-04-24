@@ -81,7 +81,7 @@ public class AddContract extends AppCompatActivity {
             runOnUiThread(() -> {
                 khachAdapter.clear();
                 for (KhachEntity khach : khachList) {
-                    khachAdapter.add(khach.getKhachId() + " - " + khach.getTenKhach());
+                    khachAdapter.add(  khach.getTenKhach());
                 }
                 khachAdapter.notifyDataSetChanged();
             });

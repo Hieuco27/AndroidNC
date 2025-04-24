@@ -57,10 +57,12 @@ public interface ContractDAO {
     void deleteAll();
 
 
-    @Query("SELECT c.*, r.soPhong, k.tenKhach " +
-            "FROM contracts c " +
-            "LEFT JOIN rooms r ON c.roomId = r.id " +
-            "LEFT JOIN khachthue k ON c.khachId = k.khachId")
+
+    @Transaction
+    @Query("SELECT * FROM contracts")
+    List<ContractWithDetails> getAllContractsSync1();
+    @Transaction
+    @Query("SELECT * FROM contracts")
     LiveData<List<ContractWithDetails>> getAllContractsWithDetails();
 }
 

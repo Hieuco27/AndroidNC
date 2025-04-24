@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/hoadon"
-        android:fontFamily="cursive"
         android:hint="Số phòng"
         android:inputType="number"
         android:padding="12dp"
@@ -36,7 +35,6 @@
         android:layout_marginTop="20dp"
         android:padding="12dp"
         android:textSize="20dp"
-        android:fontFamily="cursive"
         android:hint="Tên khách thuê"
         android:inputType="text" />
 
@@ -48,7 +46,6 @@
         android:layout_marginTop="20dp"
         android:padding="12dp"
         android:textSize="20dp"
-        android:fontFamily="cursive"
         android:hint="Số điện thoại "
         android:inputType="number" />
 
@@ -61,7 +58,6 @@
         android:padding="12dp"
         android:hint="Số căn cước"
         android:textSize="20dp"
-        android:fontFamily="cursive"
         android:inputType="number" />
 
     <LinearLayout

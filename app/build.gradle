@@ -4,9 +4,11 @@ plugins {
       id ("com.google.gms.google-services")
 }
 
+
 android {
     namespace 'com.example.navigationfragment'
     compileSdk 34
+
 
     defaultConfig {
         applicationId "com.example.navigationfragment"

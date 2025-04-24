@@ -25,6 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract HoaDonDAO hoaDonDao();
     private static volatile AppDatabase INSTANCE;
 
+
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {

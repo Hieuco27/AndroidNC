@@ -6,31 +6,48 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    android:background="@color/gray">
+    android:background="@color/add">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pink"
+        android:background="@color/khachthue"
         android:padding="10sp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_khachthue"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:fontFamily="cursive"
+                android:orientation="horizontal">
 
-                android:text="1. Khách thuê :"/>
+                <TextView
+                    android:id="@+id/tv_stt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="23dp"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold"
+                    android:text="1. "/>
+                <TextView
+                    android:id="@+id/tv_khachthue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blue"
+                    android:text=" Khách thuê :"
+                    android:textSize="24dp" />
+            </LinearLayout>
+
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30sp"
+                    android:layout_marginTop="10dp"
                     android:src="@drawable/ic_phone"
                                         />
 
@@ -40,8 +57,7 @@
                     android:layout_height="wrap_content"
                     android:text=" Sđt : 0123456789"
                     android:textSize="20dp"
-                    android:fontFamily="cursive"
-
+                    android:textColor="@color/add"
                     android:layout_marginLeft="20sp"
                     android:layout_marginTop="10dp"/>
 
@@ -51,8 +67,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_marginTop="10dp"
                     android:src="@drawable/ic_cccd"
                     />
                 <TextView
@@ -60,9 +77,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="CCCD :"
-                    android:fontFamily="cursive"
-
                     android:textSize="20dp"
+                    android:textColor="@color/add"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"/>
 
@@ -74,17 +90,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_homem"/>
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_homm"/>
                 <TextView
                     android:id="@+id/tv_phongtro"
                     android:textSize="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Phòng trọ "
-                    android:fontFamily="cursive"
-
+                    android:textColor="@color/add"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"/>
 
