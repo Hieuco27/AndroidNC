@@ -36,7 +36,7 @@ public class AddHoaDon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAddHoadonBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        roomId=getIntent().getStringExtra("ID_PHONG");
 
         hoaDonRef = FirebaseDatabase.getInstance().getReference("hoadon");
 

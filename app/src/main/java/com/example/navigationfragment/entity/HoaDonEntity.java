@@ -6,7 +6,9 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-public class HoaDonEntity {
+import java.io.Serializable;
+
+public class HoaDonEntity implements Serializable {
 
 
     private String hoaDonId;

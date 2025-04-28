@@ -158,6 +158,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                         Toast.makeText(getContext(), "Phòng chưa có hợp đồng!", Toast.LENGTH_SHORT).show();
                     } else {
                         Intent intent = new Intent(getActivity(), AddHoaDon.class);
+                        intent.putExtra("ID_PHONG", room.getId());
                         intent.putExtra("SO_PHONG", room.getSoPhong());
                         intent.putExtra("KHACH_ID",room.getKhachId());
                         startActivity(intent);
