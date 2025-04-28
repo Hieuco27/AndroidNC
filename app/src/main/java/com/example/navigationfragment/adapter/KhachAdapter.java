@@ -1,7 +1,5 @@
 package com.example.navigationfragment.adapter;
 
-import static android.content.Intent.getIntent;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -13,23 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.navigationfragment.action.KhachDetail;
 import com.example.navigationfragment.databinding.ItemAddKhachBinding;
-import com.example.navigationfragment.entity.KhachWithRoom;
-import com.example.navigationfragment.entity.KhachWithRoom;
+import com.example.navigationfragment.entity.KhachDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class KhachAdapter extends RecyclerView.Adapter<KhachAdapter.KhachViewHolder> {
-    private List<KhachWithRoom> khachList;// Danh sách khách thuê
+    private List<KhachDisplay> khachList;// Danh sách khách thuê
     private final Context context;
 
 
-    public KhachAdapter(List<KhachWithRoom> khachList, Context context) {
+    public KhachAdapter(List<KhachDisplay> khachList, Context context) {
         this.khachList = khachList != null ? khachList : new ArrayList<>(); // Tránh null
         this.context = context;
     }
     // Cập nhật dữ liệu mới
-    public void updateData(List<KhachWithRoom> khachList) {
+    public void updateData(List<KhachDisplay> khachList) {
         this.khachList.clear();
         if (khachList != null) {
             this.khachList.addAll(khachList);
@@ -49,13 +46,13 @@ public class KhachAdapter extends RecyclerView.Adapter<KhachAdapter.KhachViewHol
     @Override
     public void onBindViewHolder(@NonNull KhachAdapter.KhachViewHolder holder, int position) {
 
-        KhachWithRoom item= khachList.get(position);
+        KhachDisplay item= khachList.get(position);
 
-        if (item != null && item.khach != null) {
+        if (item != null && item.getKhach() != null) {
             holder.binding.tvStt.setText(position + 1 + ". ");
-            holder.binding.tvSdt.setText("Sđt : " + item.khach.getSdt());
-            holder.binding.tvCccd.setText("CCCD : " + item.khach.getCccd());
-            holder.binding.tvKhachthue.setText("Khách thuê : " + item.khach.getTenKhach());
+            holder.binding.tvSdt.setText("Sđt : " + item.getKhach().getSdt());
+            holder.binding.tvCccd.setText("CCCD : " + item.getKhach().getCccd());
+            holder.binding.tvKhachthue.setText("Khách thuê : " + item.getKhach().getTenKhach());
         } else {
             holder.binding.tvStt.setText(position + 1 + ". ");
             holder.binding.tvSdt.setText("Sđt : Chưa có");
@@ -69,11 +66,11 @@ public class KhachAdapter extends RecyclerView.Adapter<KhachAdapter.KhachViewHol
         }
        holder.itemView.setOnClickListener(v -> {
            Intent intent = new Intent(holder.itemView.getContext(), KhachDetail.class);
-           intent.putExtra("KHACH_ID", item.khach.getKhachId());
-           intent.putExtra("TEN_KHACH", item.khach.getTenKhach());
-           intent.putExtra("SDT", item.khach.getSdt());
-           intent.putExtra("CCCD", item.khach.getCccd());
-           intent.putExtra("SO_PHONG", item.room.getSoPhong());
+           intent.putExtra("KHACH_ID", item.getKhach().getKhachId());
+           intent.putExtra("TEN_KHACH", item.getKhach().getTenKhach());
+           intent.putExtra("SDT", item.getKhach().getSdt());
+           intent.putExtra("CCCD", item.getKhach().getCccd());
+           intent.putExtra("SO_PHONG", item.getRoomName());
 
            holder.itemView.getContext().startActivity(intent);
        });

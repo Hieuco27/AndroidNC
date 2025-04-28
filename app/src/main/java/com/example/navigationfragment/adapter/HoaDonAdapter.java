@@ -8,14 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.navigationfragment.MainActivity;
 import com.example.navigationfragment.action.HoaDonDetail;
 import com.example.navigationfragment.databinding.ItemAddHoadonBinding;
 import com.example.navigationfragment.entity.ContractEntity;
 import com.example.navigationfragment.entity.HoaDonEntity;
 import com.example.navigationfragment.entity.HoaDonWithRoom;
-import com.example.navigationfragment.entity.KhachEntity;
-import com.example.navigationfragment.entity.KhachWithRoom;
 import com.example.navigationfragment.entity.RoomEntity;
 
 import java.util.List;
