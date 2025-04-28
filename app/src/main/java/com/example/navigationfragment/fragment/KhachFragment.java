@@ -44,7 +44,7 @@ public class KhachFragment extends Fragment {
         roomRef = firebaseDatabase.getReference("rooms");
         // Khởi tạo Adapter
         khachAdapter = new KhachAdapter(khachDisplays, getContext());
-        binding.rcv.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.rcv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.rcv.setAdapter(khachAdapter);
 
         // Đồng bộ dữ liệu từ Firebase
@@ -69,7 +69,6 @@ public class KhachFragment extends Fragment {
                                     khachDisplays.add(khachDisplay);
                                     if (khachDisplays.size() == snapshot.getChildrenCount()) {
                                         khachAdapter.updateData(khachDisplays);
-                                        khachAdapter.notifyDataSetChanged();
                                     }
                                 }).addOnFailureListener(
                                         runnable -> {
@@ -77,7 +76,6 @@ public class KhachFragment extends Fragment {
                                             khachDisplays.add(khachDisplay);
                                             if (khachDisplays.size() == snapshot.getChildrenCount()) {
                                                 khachAdapter.updateData(khachDisplays);
-                                                khachAdapter.notifyDataSetChanged();
                                             }
                                         }
                                 );
