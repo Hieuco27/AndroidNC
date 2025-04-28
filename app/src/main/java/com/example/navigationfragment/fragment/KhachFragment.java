@@ -71,7 +71,16 @@ public class KhachFragment extends Fragment {
                                         khachAdapter.updateData(khachDisplays);
                                         khachAdapter.notifyDataSetChanged();
                                     }
-                                });
+                                }).addOnFailureListener(
+                                        runnable -> {
+                                            khachDisplay.setRoomName("KXĐ");
+                                            khachDisplays.add(khachDisplay);
+                                            if (khachDisplays.size() == snapshot.getChildrenCount()) {
+                                                khachAdapter.updateData(khachDisplays);
+                                                khachAdapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                );
                     }
                 }
             }
