@@ -7,6 +7,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity(
@@ -28,32 +29,47 @@ public class RoomEntity implements Serializable {
     private double giaDien;
     private double giaNuoc;
     private double giaDichVu;
-    private boolean trangThai;
+    private Map<String, Boolean> assets;
+    private String khachId;
+    private String status;//ko co khach: null hoac la
+    // "NoCustomer" "hop dong co hieu luc" la "ContractValid"
+    // "hop dong ko hieu luc" "ContractNotValid"
+    //co hoa don" hasBill khong hoa don "No bill"
 
-
-    public RoomEntity() {
-        this.id = UUID.randomUUID().toString();
+    public String getKhachId() {
+        return khachId;
     }
 
+    public void setKhachId(String khachId) {
+        this.khachId = khachId;
+    }
+
+    public Map<String, Boolean> getAssets() {
+        return assets;
+    }
+
+    public void setAssets(Map<String, Boolean> assets) {
+        this.assets = assets;
+    }
+
+    public RoomEntity() {}
 
     public RoomEntity(@NonNull String id, String soPhong, double giaPhong, double giaDien, double giaNuoc, double giaDichVu, boolean trangThai) {
-        this.id = UUID.randomUUID().toString();
+        this.id = id;
         this.soPhong = soPhong;
         this.giaPhong = giaPhong;
         this.giaDien = giaDien;
         this.giaNuoc = giaNuoc;
         this.giaDichVu = giaDichVu;
-        this.trangThai = trangThai;
     }
 
     // Nếu cần thêm constructor tuỳ biến, nhớ gán đầy đủ các thuộc tính
-    public RoomEntity(String soPhong, double giaPhong, double giaDien, double giaNuoc, double giaDichVu, boolean trangThai) {
+    public RoomEntity(String soPhong, double giaPhong, double giaDien, double giaNuoc, double giaDichVu) {
         this.soPhong = soPhong;
         this.giaPhong = giaPhong;
         this.giaDien = giaDien;
         this.giaNuoc = giaNuoc;
         this.giaDichVu = giaDichVu;
-        this.trangThai = trangThai;
     }
 
     // Getter & Setter
@@ -107,24 +123,6 @@ public class RoomEntity implements Serializable {
         this.soPhong = soPhong;
     }
 
-    public boolean isTrangThai() {
-        return trangThai;
-    }
 
-    public void setTrangThai(boolean trangThai) {
-        this.trangThai = trangThai;
-    }
 
-    @Override
-    public String toString() {
-        return "RoomEntity{" +
-                "giaDichVu=" + giaDichVu +
-                ", id='" + id + '\'' +
-                ", soPhong='" + soPhong + '\'' +
-                ", giaPhong=" + giaPhong +
-                ", giaDien=" + giaDien +
-                ", giaNuoc=" + giaNuoc +
-                ", trangThai=" + trangThai +
-                '}';
-    }
 }

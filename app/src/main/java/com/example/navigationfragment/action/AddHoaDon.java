@@ -7,10 +7,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.navigationfragment.AppDatabase;
-import com.example.navigationfragment.DAO.ContractDAO;
-import com.example.navigationfragment.DAO.HoaDonDAO;
-import com.example.navigationfragment.DAO.RoomDAO;
 import com.example.navigationfragment.databinding.ActivityAddHoadonBinding;
 import com.example.navigationfragment.entity.ContractEntity;
 import com.example.navigationfragment.entity.HoaDonEntity;
@@ -26,9 +22,7 @@ import java.util.concurrent.Executors;
 
 public class AddHoaDon extends AppCompatActivity {
     private ActivityAddHoadonBinding binding;
-    private HoaDonDAO hoaDonDAO;
-    private ContractDAO contractDAO;
-    private RoomDAO roomDAO;
+
     private DatabaseReference hoaDonRef;
     private String soPhong;
     private double giaPhong = 0;
@@ -43,11 +37,7 @@ public class AddHoaDon extends AppCompatActivity {
         binding = ActivityAddHoadonBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Khởi tạo Room + Firebase
-        AppDatabase db = AppDatabase.getInstance(this);
-        hoaDonDAO = db.hoaDonDao();
-        contractDAO = db.contractDao();
-        roomDAO = db.roomDao();
+
         hoaDonRef = FirebaseDatabase.getInstance().getReference("hoadon");
 
         // Nhận số phòng từ Intent
@@ -55,7 +45,6 @@ public class AddHoaDon extends AppCompatActivity {
         if (soPhong != null) {
             binding.tvPhong.setText("Phòng: " + soPhong);
             binding.tvPhong.setEnabled(false);
-            loadRoomInfoBySoPhong(soPhong);  // Gọi để hiển thị giá điện nước
         }
         // Chọn ngày
         binding.edtNgayTao.setOnClickListener(v -> showDatePicker());
@@ -65,35 +54,22 @@ public class AddHoaDon extends AppCompatActivity {
         binding.btnThem.setOnClickListener(v -> addHoaDon());
         // Hủy
         binding.btnHuy.setOnClickListener(v -> finish());
-    }
-    private void loadRoomInfoBySoPhong(String soPhong) {
-        new Thread(() -> {
-            List<ContractEntity> contracts = contractDAO.getAllContractsSync();
-            for (ContractEntity contract : contracts) {
-                RoomEntity room = roomDAO.getRoomByIdSync(contract.getRoomId());
-
-                Log.d("DEBUG", "Contract: " + contract.getRoomId() +
-                        " | Room: " + (room != null ? room.getSoPhong() : "null"));
-
-                if (room != null && room.getSoPhong().equalsIgnoreCase(soPhong)) {
-                    giaPhong = room.getGiaPhong();
-                    giaDien = room.getGiaDien();
-                    giaNuoc = room.getGiaNuoc();
-                    giaDichVu = room.getGiaDichVu();
-                    roomId = room.getId();
-
-                    runOnUiThread(() -> {
-                        binding.edtSodien.setText("0");
-                        binding.edtSonuoc.setText("0");
-                    });
-                    return;
-                }
+        binding.edtSodien.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tinhTongTien();
             }
-            runOnUiThread(() ->
-                    Toast.makeText(this, "Không tìm thấy thông tin phòng để tính tiền!", Toast.LENGTH_SHORT).show()
-            );
-        }).start();
+        });
+
+        binding.edtSonuoc.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tinhTongTien();
+            }
+        });
+
     }
+
 
     private void tinhTongTien() {
         try {
@@ -148,7 +124,6 @@ public class AddHoaDon extends AppCompatActivity {
 
         // Lưu vào Room và Firebase
         Executors.newSingleThreadExecutor().execute(() -> {
-            hoaDonDAO.insert(hoaDon);
             hoaDonRef.child(idHoaDon).setValue(hoaDon);
 
             runOnUiThread(() -> {
@@ -170,3 +145,5 @@ public class AddHoaDon extends AppCompatActivity {
         datePickerDialog.show();
     }
 }
+
+

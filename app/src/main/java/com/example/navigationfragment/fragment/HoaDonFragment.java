@@ -13,12 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.navigationfragment.AppDatabase;
-import com.example.navigationfragment.DAO.ContractDAO;
-import com.example.navigationfragment.DAO.HoaDonDAO;
 import com.example.navigationfragment.adapter.HoaDonAdapter;
 import com.example.navigationfragment.databinding.FragmentHoadonBinding;
-import com.example.navigationfragment.entity.ContractEntity;
 import com.example.navigationfragment.entity.HoaDonEntity;
 import com.example.navigationfragment.entity.HoaDonWithRoom;
 import com.google.firebase.database.ChildEventListener;
@@ -41,16 +37,13 @@ public class HoaDonFragment extends Fragment {
     private DatabaseReference hoaDonRef;
     private ExecutorService executorService;
     private ChildEventListener hoaDonListener;
-    private HoaDonDAO hoaDonDAO;
-    private ContractDAO contractDAO;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding= FragmentHoadonBinding.inflate(inflater,container,false);
 
-        hoaDonDAO= AppDatabase.getInstance(getContext()).hoaDonDao();
-        contractDAO=AppDatabase.getInstance(getContext()).contractDao();
         // Khởi tạo ExecutorService
         executorService = Executors.newSingleThreadExecutor();
         // Khởi tạo Firebase
@@ -78,7 +71,7 @@ public class HoaDonFragment extends Fragment {
                                         Log.d("PhongFragment", "Đã xoá tất cả trên Firebase");
                                         // Xoá dữ liệu trong Room DB
                                         executorService.execute(() -> {
-                                            hoaDonDAO.deleteAllHoaDon();
+
                                             requireActivity().runOnUiThread(() -> {
                                                 Toast.makeText(requireContext(), "Đã xoá hóa đơn", Toast.LENGTH_SHORT).show();
                                                 // Có thể cập nhật lại UI ở đây nếu cần
@@ -99,12 +92,7 @@ public class HoaDonFragment extends Fragment {
         return binding.getRoot();
     }
     private void observeHoaDonData(){
-        hoaDonDAO.getAllHoaDonWithRoom().observe(getViewLifecycleOwner(), hoaDon -> {
-            if (hoaDon != null) {
-                hoaDonAdapter.upDateData(hoaDon);
-                Log.d("FragmentContract", "Số lượng hợp đồng: " + hoaDon.size());
-            }
-        });
+
     }
     private void fetchHoaDonDataFromFirebase(){
         hoaDonListener= new ChildEventListener() {
@@ -114,7 +102,6 @@ public class HoaDonFragment extends Fragment {
                 HoaDonEntity newHoaDon = snapshot.getValue(HoaDonEntity.class);
                 if (newHoaDon != null) {
                     executorService.execute(() -> {
-                        hoaDonDAO.insert(newHoaDon);
 
                     });
                 }
@@ -126,7 +113,6 @@ public class HoaDonFragment extends Fragment {
                 HoaDonEntity updatedHoaDon = snapshot.getValue(HoaDonEntity.class);
                 if (updatedHoaDon != null) {
                     executorService.execute(() -> {
-                        hoaDonDAO.update(updatedHoaDon);
                     });
                 }
 
@@ -138,7 +124,6 @@ public class HoaDonFragment extends Fragment {
                 HoaDonEntity deletedHoaDon = snapshot.getValue(HoaDonEntity.class);
                 if (deletedHoaDon != null) {
                     executorService.execute(() -> {
-                        hoaDonDAO.delete(deletedHoaDon);
                     });
                 }
             }

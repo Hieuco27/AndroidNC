@@ -45,8 +45,9 @@ public class MyProfileFragment extends Fragment {
         setUserInformation();
         initListener();
         return binding.getRoot();
-
     }
+
+
     private void setUserInformation(){
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         if (user==null) return;
@@ -66,9 +67,9 @@ public class MyProfileFragment extends Fragment {
         binding.btnUpdateProfile.setOnClickListener(v -> {
             onClickUpdateProfile();
         });
-        binding.btnUpdateEmail.setOnClickListener(v -> {
+      /*  binding.btnUpdateEmail.setOnClickListener(v -> {
             onClickUpdateEmail();
-        });
+        });*/
     }
     private  void onClickRequestPermission(){
 

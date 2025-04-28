@@ -42,6 +42,7 @@ public class HoaDonDetail extends AppCompatActivity {
 
         getDataFromIntent();
         showDataToViews();
+        // Bill gửi hóa đơn
         binding.btnSendMessage.setOnClickListener(v -> {
             String message = "Hóa đơn: " + tenHoaDon + "\n"
                     + "Phòng: " + soPhong + "\n"
@@ -80,8 +81,6 @@ public class HoaDonDetail extends AppCompatActivity {
 
     }
 
-
-
     private void getDataFromIntent() {
         Intent intent = getIntent();
         tenHoaDon = intent.getStringExtra("tenHoaDon");
@@ -96,14 +95,14 @@ public class HoaDonDetail extends AppCompatActivity {
         soDien = intent.getIntExtra("soDien", 0);
         soNuoc = intent.getIntExtra("soNuoc", 0);
         giaDien = intent.getDoubleExtra("giaDien", 0);
-        giaNuoc = intent.getDoubleExtra("giaNuoc", 0);
+        giaNuoc = intent.getDoubleExtra("giaNuoc", 0
+        );
 
         tienNuoc = intent.getDoubleExtra("tienNuoc", 0);
         tienDien = intent.getDoubleExtra("tienDien", 0);
-        tongTien = intent.getDoubleExtra("tongTien", 0);
+        tongTien = giaPhong + giaDichVu + tienDien + tienNuoc;
         daThanhToan = intent.getBooleanExtra("daThanhToan", false);
     }
-
 
     // Hien thi du lieu len man hinh
     private void showDataToViews() {

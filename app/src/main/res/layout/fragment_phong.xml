@@ -26,10 +26,10 @@
         android:src="@drawable/ic_add_fab"
         android:tint="@color/white"
         app:maxImageSize="40dp"/>
-    <Button
+<!--    <Button
         android:id="@+id/btnXoa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Xóa"
-        />
+        />-->
 </FrameLayout>

@@ -44,6 +44,7 @@ public class ContractEntity implements Serializable {
     @ColumnInfo(name = "isStatus")
     private boolean isStatus;
 
+
     public boolean isStatus() {
         return isStatus;
     }

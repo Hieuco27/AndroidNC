@@ -1,13 +1,17 @@
 package com.example.navigationfragment.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.navigationfragment.R;
 import com.example.navigationfragment.databinding.ItemAddRoomBinding;
 import com.example.navigationfragment.entity.RoomEntity;
 import com.example.navigationfragment.fragment.BottomSheetFragment;
@@ -46,6 +50,14 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             return;
         }
         holder.binding.txtRoomNumber.setText("Phòng: "+room.getSoPhong());
+        // Kiểm tra trạng thái phòng và cập nhật màu nền từ drawable
+        if (room.getKhachId()!=null) {
+            Drawable drawable = ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_btn_primary);
+            holder.itemView.setBackground(drawable);
+        } else {
+            Drawable drawable = ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_themhoadon);
+            holder.itemView.setBackground(drawable);
+        }
         holder.itemView.setOnClickListener(v -> {
             BottomSheetFragment bottomSheetFragment = BottomSheetFragment.newInstance(room);
             bottomSheetFragment.show(((AppCompatActivity) holder.itemView.getContext()).getSupportFragmentManager(), bottomSheetFragment.getTag());

@@ -13,7 +13,11 @@
     <color name="cmain">#121212</color>
     <color name="blue2">#8687E7</color>
     <color name="white1">#BABBF4</color>
-    <color name="hoadon">#FFF9C4</color>
+    <color name="hoadon">#FAF6D7</color>
+    <color name="hoadon1">#F0E061</color>
+    <color name="hoadontext">#D3C42A</color>
+
+
     <color name="hopdong1">#F0E59E</color>
     <color name= "khachthue">#F8BBD0</color>
     <color name= "hopdong">#C8E6C9</color>

@@ -87,5 +87,17 @@
             android:text="👁️      Xem Thông Tin Phòng"
             android:textSize="20dp"/>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_fee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="👁️      Xem Phi den bu"
+            android:textSize="20dp"/>
+    </LinearLayout>
 
 </LinearLayout>

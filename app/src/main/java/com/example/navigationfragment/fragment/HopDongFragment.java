@@ -11,10 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.navigationfragment.AppDatabase;
-import com.example.navigationfragment.DAO.ContractDAO;
-import com.example.navigationfragment.DAO.KhachDAO;
-import com.example.navigationfragment.DAO.RoomDAO;
 import com.example.navigationfragment.adapter.ContractAdapter;
 import com.example.navigationfragment.databinding.FragmentHopdongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
@@ -35,9 +31,7 @@ import java.util.concurrent.Executors;
 public class HopDongFragment extends Fragment {
     private FragmentHopdongBinding binding;
     private ContractAdapter contractAdapter;
-    private ContractDAO contractDAO;
-    private RoomDAO roomDAO;
-    private KhachDAO khachDAO;
+
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference contractRef;
     private ExecutorService executorService;
@@ -49,11 +43,7 @@ public class HopDongFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHopdongBinding.inflate(inflater, container, false);
 
-        // Init Room DB + DAO
-        AppDatabase db = AppDatabase.getInstance(getContext());
-        contractDAO = db.contractDao();
-        roomDAO = db.roomDao();
-        khachDAO = db.khachDao();
+
         executorService = Executors.newSingleThreadExecutor();
 
         // Firebase
@@ -63,10 +53,7 @@ public class HopDongFragment extends Fragment {
         // Adapter
         contractAdapter = new ContractAdapter(
                 getContext(),
-                contractList,
-                roomDAO,
-                contractDAO,
-                khachDAO
+                contractList
         );
         binding.rcv.setAdapter(contractAdapter);
         binding.rcv.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -77,8 +64,6 @@ public class HopDongFragment extends Fragment {
             binding.swipeRefresh.setRefreshing(false);
         });
 
-        // Chỉ observe LiveData 1 lần khi tạo View
-        observeContractData();
 
         // Đồng bộ từ Firebase -> Room
         fetchContractsFromFirebase();
@@ -86,24 +71,11 @@ public class HopDongFragment extends Fragment {
         return binding.getRoot();
     }
 
-    // Quan sát LiveData để cập nhật danh sách hợp đồng
-    private void observeContractData() {
-        contractDAO.getAllContractsWithDetails().observe(getViewLifecycleOwner(), contracts -> {
-            if (contracts != null) {
-                contractAdapter.updateData(contracts);
-                Log.d("HopDongFragment", "Số hợp đồng lấy được: " + contracts.size());
-            }
-        });
-    }
+
 
 
     private void loadContracts() {
-        executorService.execute(() -> {
-            List<ContractWithDetails> contracts =  contractDAO.getAllContractsSync1(); // Tạo hàm mới này trong DAO
-            requireActivity().runOnUiThread(() -> {
-                contractAdapter.updateData(contracts); // hoặc setContractList(contracts)
-            });
-        });
+
     }
 
 
@@ -113,15 +85,7 @@ public class HopDongFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 ContractEntity newContract = snapshot.getValue(ContractEntity.class);
                 executorService.execute(() -> {
-                    RoomEntity room = roomDAO.getRoomByIdSync(newContract.getRoomId());
-                    KhachEntity khach = khachDAO.getKhachByIdSync(newContract.getKhachId());
 
-                    if (room != null && khach != null) {
-                        contractDAO.insert(newContract);
-                        Log.d("ContractSync", "Đã insert hợp đồng: " + newContract.getContractId());
-                    } else {
-                        Log.e("ContractSync", "Không thể insert contract vì thiếu Room hoặc Khách");
-                    }
                 });
             }
 
@@ -129,7 +93,6 @@ public class HopDongFragment extends Fragment {
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 ContractEntity updatedContract = snapshot.getValue(ContractEntity.class);
                 if (updatedContract != null) {
-                    executorService.execute(() -> contractDAO.update(updatedContract));
                 }
             }
 
@@ -138,7 +101,6 @@ public class HopDongFragment extends Fragment {
                 ContractEntity deletedContract = snapshot.getValue(ContractEntity.class);
                 if (deletedContract != null) {
                     executorService.execute(() -> {
-                        contractDAO.delete(deletedContract);
                     });
                 }
             }

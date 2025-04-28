@@ -1,89 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Thêm khách thuê"
-        android:background="@drawable/btnmain"
-        android:padding="15dp"
-        android:textSize="28dp"
-        android:gravity="center"
-        android:fontFamily="serif"
-        android:textColor="@color/black" />
-
-    <EditText
-        android:id="@+id/edt_sophong"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/hoadon"
-        android:hint="Số phòng"
-        android:inputType="number"
-        android:padding="12dp"
-        android:textSize="20dp" />
-
-    <EditText
-        android:id="@+id/edt_tenkhach"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/hoadon"
-        android:layout_marginTop="20dp"
-        android:padding="12dp"
-        android:textSize="20dp"
-        android:hint="Tên khách thuê"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/edt_sdt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/hoadon"
-        android:layout_marginTop="20dp"
-        android:padding="12dp"
-        android:textSize="20dp"
-        android:hint="Số điện thoại "
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/edt_cccd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/hoadon"
-        android:layout_marginTop="20dp"
-        android:padding="12dp"
-        android:hint="Số căn cước"
-        android:textSize="20dp"
-        android:inputType="number" />
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp">
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <Button
-            android:id="@+id/btn_them"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Thêm"
-            android:backgroundTint="@color/pink"
-            android:textColor="@color/white" />
+            android:text="Thêm khách thuê"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:gravity="center"
+            android:padding="16dp"
+            android:background="@drawable/bg_title_rounded" />
 
-        <Button
-            android:id="@+id/btn_huy"
-            android:layout_width="0dp"
+        <!-- Số phòng -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Hủy"
-            android:backgroundTint="@color/pink"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_input_rounded"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_sophong" />
+
+            <EditText
+                android:id="@+id/edt_sophong"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Số phòng"
+                android:editable="false"
+                android:enabled="false"
+                android:inputType="number"
+                android:background="@android:color/transparent"
+                android:paddingStart="12dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <!-- Tên khách -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_input_rounded"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_tenant" />
+
+            <EditText
+                android:id="@+id/edt_tenkhach"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Tên khách thuê"
+                android:inputType="textPersonName"
+                android:background="@android:color/transparent"
+                android:paddingStart="12dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <!-- SĐT -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_input_rounded"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_phone" />
+
+            <EditText
+                android:id="@+id/edt_sdt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Số điện thoại"
+                android:inputType="phone"
+                android:background="@android:color/transparent"
+                android:paddingStart="12dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <!-- CCCD -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_input_rounded"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_cccd" />
+
+            <EditText
+                android:id="@+id/edt_cccd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Số căn cước"
+                android:inputType="number"
+                android:background="@android:color/transparent"
+                android:paddingStart="12dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_them"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Thêm"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_btn_primary"
+                android:padding="12dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_huy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hủy"
+                android:textColor="@color/white"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_btn_primary"
+                android:padding="12dp" />
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

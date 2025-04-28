@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.navigationfragment.AppDatabase;
-import com.example.navigationfragment.DAO.KhachDAO;
-import com.example.navigationfragment.DAO.RoomDAO;
 import com.example.navigationfragment.databinding.ActivityAddKhachBinding;
 import com.example.navigationfragment.entity.KhachEntity;
 import com.example.navigationfragment.entity.RoomEntity;
@@ -19,31 +16,24 @@ import java.util.concurrent.Executors;
 
 public class AddKhach extends AppCompatActivity {
     private ActivityAddKhachBinding binding;
-    private KhachDAO khachDAO;
-    private RoomDAO roomDAO;
     private DatabaseReference khachRef;
     private ExecutorService executorService;
 
+private String idPhong;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAddKhachBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        // Khởi tạo DAO
-        khachDAO = AppDatabase.getInstance(this).khachDao();
-        roomDAO = AppDatabase.getInstance(this).roomDao();
         khachRef = FirebaseDatabase.getInstance().getReference("khach");
-
 
         // Khởi tạo ExecutorService
         executorService = Executors.newSingleThreadExecutor();
         // Lấy dữ liệu số phòng từ Intent
-        String soPhong = getIntent().getStringExtra("SO_PHONG");
-
-        if (soPhong != null) {
+        idPhong = getIntent().getStringExtra("ID_PHONG");
+        String soPhong=getIntent().getStringExtra("SO_PHONG");
+        if (idPhong != null) {
             binding.edtSophong.setText(soPhong);
-            binding.edtSophong.setEnabled(false);
         }
         binding.btnThem.setOnClickListener(v -> addKhach());
         binding.btnHuy.setOnClickListener(v -> {
@@ -52,17 +42,16 @@ public class AddKhach extends AppCompatActivity {
     }
 
     private void addKhach() {
-        String soPhong = binding.edtSophong.getText().toString().trim();
         String tenKhach = binding.edtTenkhach.getText().toString().trim();
         String sdt = binding.edtSdt.getText().toString().trim();
         String cccd = binding.edtCccd.getText().toString().trim();
 
-        if (tenKhach.isEmpty() || sdt.isEmpty() || cccd.isEmpty() || soPhong.isEmpty()) {
+        if (tenKhach.isEmpty() || sdt.isEmpty() || cccd.isEmpty() ) {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
-       /* if (!sdt.matches("^\\d{10}$")) {
+        if (!sdt.matches("^\\d{10}$")) {
             Toast.makeText(this, "Số điện thoại phải có đúng 10 chữ số", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -70,22 +59,18 @@ public class AddKhach extends AppCompatActivity {
         if (!cccd.matches("^\\d{12}$")) {
             Toast.makeText(this, "CCCD phải có đúng 12 chữ số", Toast.LENGTH_SHORT).show();
             return;
-        }*/
+        }
 
         // Thêm dữ liệu trong luồng nền
         executorService.execute(() -> {
-            RoomEntity room = roomDAO.getRoomBySoPhongSync(soPhong);
-            if (room == null) {
-                runOnUiThread(() -> Toast.makeText(this, "Phòng không tồn tại!", Toast.LENGTH_SHORT).show());
-                return;
-            }
-
             // Tạo khachId bằng UUID
-            String khachId = UUID.randomUUID().toString();
-            KhachEntity khach = new KhachEntity(khachId, room.getId(), tenKhach, sdt, cccd);
-            khachDAO.insert(khach);
+            String khachId = khachRef.push().getKey();
+            KhachEntity khach = new KhachEntity(khachId, idPhong, tenKhach, sdt, cccd);
             khachRef.child(khachId).setValue(khach);
-
+            FirebaseDatabase.getInstance().getReference("rooms")
+                    .child(idPhong)
+                    .child("khachId")
+                    .setValue(khachId);
             runOnUiThread(() -> {
                 Toast.makeText(this, "Thêm khách thành công: " + tenKhach, Toast.LENGTH_SHORT).show();
                 finish();

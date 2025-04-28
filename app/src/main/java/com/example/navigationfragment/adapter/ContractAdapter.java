@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -16,10 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.navigationfragment.DAO.ContractDAO;
-import com.example.navigationfragment.DAO.KhachDAO;
-import com.example.navigationfragment.DAO.RoomDAO;
 import com.example.navigationfragment.R;
+import com.example.navigationfragment.action.HopDongDetail;
 import com.example.navigationfragment.databinding.ItemAddHopdongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
 import com.example.navigationfragment.entity.ContractWithDetails;
@@ -41,9 +40,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
 
     private List<ContractWithDetails> contractList;
     private Context context;
-    private RoomDAO roomDAO;
-    private ContractDAO contractDAO;
-    private KhachDAO khachDAO;
+
     private RoomEntity room;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -52,18 +49,14 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     public ContractAdapter(Context context) {
         this.context = context;
         this.contractList = new ArrayList<>();
-        this.roomDAO = null;
-        this.contractDAO = null;
-        this.khachDAO = null;
+
     }
 
     // Constructor mới: nhận Context và danh sách contractList ban đầu
-    public ContractAdapter(Context context, List<ContractWithDetails> contractList, RoomDAO roomDAO, ContractDAO contractDAO, KhachDAO khachDAO) {
+    public ContractAdapter(Context context, List<ContractWithDetails> contractList) {
         this.context = context;
         this.contractList = (contractList != null) ? contractList : new ArrayList<>();
-        this.roomDAO = roomDAO;
-        this.contractDAO = contractDAO;
-        this.khachDAO= khachDAO;
+
     }
 
 
@@ -101,6 +94,12 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
         holder.binding.tvDateend.setText("Ngày kết thúc: " + contract.getEndDate());
         holder.binding.tvNguoio.setText("Số người ở: " + contract.getNumberOfGuests());
         holder.binding.tvCar.setText("Số lượng xe: " + contract.getNumberOfCars());
+        
+         holder.itemView.setOnClickListener(v->{
+             Intent intent = new Intent(context, HopDongDetail.class);
+             intent.putExtra("contractId", contract.getContractId());
+             context.startActivity(intent);
+         });
 
         // Cập nhật màu nền ban đầu dựa trên trạng thái hợp đồng
         updateCardBackground(holder, contract);
@@ -114,7 +113,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                 holder.binding.cardView.setCardBackgroundColor(Color.parseColor("#FF6666")); // Màu đỏ khi hết hiệu lực
                 Toast.makeText(context, "Hợp đồng đã hết hiệu lực", Toast.LENGTH_SHORT).show();
             } else {
-                holder.binding.cardView.setCardBackgroundColor(Color.parseColor("#66FF66")); // Màu xanh khi còn hiệu lực
+                holder.binding.cardView.setCardBackgroundColor(Color.parseColor("#C8E6C9")); // Màu xanh khi còn hiệu lực
                 Toast.makeText(context, "Hợp đồng vẫn còn hiệu lực", Toast.LENGTH_SHORT).show();
             }
         });
@@ -150,7 +149,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                                 contract.setStatus(false);
                                 updateContract(contract);
                                 if (room != null) {
-                                    room.setTrangThai(false); // Phòng trống sau khi chấm dứt
+                                    room.setKhachId(null); // Phòng trống sau khi chấm dứt
                                     updateRoom(room);
                                 }
                                 updateCardBackground(holder, contract); // Cập nhật màu sau khi chấm dứt
@@ -169,7 +168,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                                 contract.setStatus(true);
                                 updateContract(contract);
                                 if (room != null) {
-                                    room.setTrangThai(true); // Phòng có người ở sau khi khôi phục
+                                    room.setKhachId(contract.getKhachId()); // Phòng có người ở sau khi khôi phục
                                     updateRoom(room);
                                 }
                                 updateCardBackground(holder, contract); // Cập nhật màu sau khi khôi phục
@@ -205,7 +204,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
             ViewCompat.setBackgroundTintList(holder.binding.cardView, ColorStateList.valueOf(Color.parseColor("#FF6666")));
 
         } else {
-            ViewCompat.setBackgroundTintList(holder.binding.cardView, ColorStateList.valueOf(Color.parseColor("#66FF66")));
+            ViewCompat.setBackgroundTintList(holder.binding.cardView, ColorStateList.valueOf(Color.parseColor("#C8E6C9")));
         }
     }
 
@@ -214,11 +213,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                 .child(contract.getContractId())
                 .setValue(contract)
                 .addOnSuccessListener(aVoid -> {
-                    if (contractDAO != null) {
-                        executorService.execute(() -> contractDAO.update(contract));
-                    } else {
-                        Toast.makeText(context, "ContractDAO is null", Toast.LENGTH_SHORT).show();
-                    }
+
 
                     notifyDataSetChanged(); // Cập nhật lại danh sách
                 })
@@ -232,7 +227,6 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                 .child(room.getId())
                 .setValue(room)
                 .addOnSuccessListener(aVoid -> {
-                    executorService.execute(() -> roomDAO.update(room));
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(context, "Lỗi cập nhật phòng trên Firebase: " + e.getMessage(), Toast.LENGTH_SHORT).show();

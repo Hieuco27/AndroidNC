@@ -51,31 +51,31 @@
                     <TextView
                         android:id="@+id/tv_soPhong"
                         android:text="Số phòng: 501"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"/>
                     <TextView
                         android:id="@+id/tv_tenKhach"
                         android:text="Tên: Hằng"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
 
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"/>
                     <TextView
                         android:id="@+id/tv_soNguoi"
                         android:text="Số người ở: 3"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
 
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"/>
                     <TextView
                         android:text="Tháng: 4/2024"
-                        android:textSize="16dp"
+                        android:textSize="18dp"
 
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"/>
                     <TextView
-                        android:textSize="16dp"
+                        android:textSize="18dp"
 
                         android:text="Địa chỉ: Số 66 ngõ 734 Kim Giang"
                         android:layout_height="match_parent"
@@ -113,16 +113,28 @@
                     android:padding="4dp">
 
                     <TableRow>
-                        <TextView android:text="Tên" android:textStyle="bold" />
-                        <TextView android:text="Số Lượng" android:textStyle="bold" />
-                        <TextView android:text="Đơn Vị" android:textStyle="bold" />
-                        <TextView android:text="Đơn Giá" android:textStyle="bold" />
-                        <TextView android:text="Thành Tiền" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Tên" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Số Lượng" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Đơn Vị" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Đơn Giá" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Thành Tiền" android:textStyle="bold" />
                     </TableRow>
 
                     <!-- Dữ liệu -->
                     <TableRow>
-                        <TextView android:text="Tiền phòng" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Tiền phòng" />
                         <TextView android:text="1" />
                         <TextView android:text="Phòng" />
                         <TextView
@@ -135,7 +147,9 @@
 
 
                     <TableRow>
-                        <TextView android:text="Dịch vụ" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Dịch vụ" />
                         <TextView android:text="1" />
                         <TextView android:text="Phòng" />
                         <TextView
@@ -166,15 +180,27 @@
                     android:padding="4dp">
 
                     <TableRow>
-                        <TextView android:text="Tên" android:textStyle="bold" />
-                        <TextView android:text="Số Lượng" android:textStyle="bold" />
-                        <TextView android:text="Đơn Vị" android:textStyle="bold" />
-                        <TextView android:text="Đơn Giá" android:textStyle="bold" />
-                        <TextView android:text="Thành Tiền" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Tên" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Số Lượng" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Đơn Vị" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Đơn Giá" android:textStyle="bold" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Thành Tiền" android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow>
-                        <TextView android:text="Điện" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Điện" />
                         <TextView
                             android:id="@+id/tv_soDien"
                             android:text="114" />
@@ -188,7 +214,9 @@
                     </TableRow>
 
                     <TableRow>
-                        <TextView android:text="Nước" />
+                        <TextView
+                            android:textSize="16dp"
+                            android:text="Nước" />
                         <TextView
                             android:id="@+id/tv_soNuoc"
                             android:text="6" />
@@ -330,21 +358,23 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_send_message"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
-                        android:backgroundTint="#2196F3"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_title_rounded"
                         android:textSize="18dp"
                         android:text="Gửi tin nhắn"
                         android:textColor="#FFFFFF" />
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_save_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="#4CAF50"
+                        android:padding="8dp"
+                        android:background="@drawable/rounded_primary_button"
                         android:textSize="18dp"
                         android:text="Lưu ảnh màn hình"
                         android:textColor="#FFFFFF" />

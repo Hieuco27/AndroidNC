@@ -17,8 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.example.navigationfragment.AppDatabase;
-import com.example.navigationfragment.DAO.RoomDAO;
 import com.example.navigationfragment.action.AddRoom;
 import com.example.navigationfragment.adapter.RoomAdapter;
 import com.example.navigationfragment.databinding.FragmentPhongBinding;
@@ -28,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +36,7 @@ import java.util.concurrent.Executors;
 public class PhongFragment extends Fragment {
     private FragmentPhongBinding binding;
     private RoomAdapter roomAdapter;
-    private List<RoomEntity> roomList = new ArrayList<>();
-    private RoomDAO roomDAO;
+    private List<RoomEntity> roomList;
     private DatabaseReference roomRef;
     private ExecutorService executorService;
     private ChildEventListener roomListener;
@@ -47,7 +45,6 @@ public class PhongFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         executorService = Executors.newSingleThreadExecutor();
-        roomDAO = AppDatabase.getInstance(requireContext()).roomDao();
         roomRef = FirebaseDatabase.getInstance().getReference("rooms");
         roomList = new ArrayList<>();
         roomAdapter = new RoomAdapter(roomList, getContext());
@@ -62,8 +59,6 @@ public class PhongFragment extends Fragment {
         binding.rcv.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         binding.rcv.setAdapter(roomAdapter);
 
-        // Quan sát dữ liệu từ Room
-        observeRoomData();
 
         // Đồng bộ dữ liệu từ Firebase
         fetchRoomsFromFirebase();
@@ -71,7 +66,7 @@ public class PhongFragment extends Fragment {
         // Sự kiện thêm phòng
         binding.addfab.setOnClickListener(v -> openThemPhongActivity());
 
-        binding.btnXoa.setOnClickListener(v -> {
+       /* binding.btnXoa.setOnClickListener(v -> {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Xác nhận xoá tất cả?")
                     .setMessage("Bạn có chắc chắn muốn xoá hết tất cả phòng không?")
@@ -82,7 +77,6 @@ public class PhongFragment extends Fragment {
                                     Log.d("PhongFragment", "Đã xoá tất cả trên Firebase");
                                     // Xoá Room DB
                                     executorService.execute(() -> {
-                                        roomDAO.deleteAllRooms();
                                         requireActivity().runOnUiThread(this::clearAllRoomsUI);
                                     });
                                 })
@@ -90,7 +84,7 @@ public class PhongFragment extends Fragment {
                     })
                     .setNegativeButton("Huỷ", null)
                     .show();
-        });
+        });*/
 
         return binding.getRoot();
     }
@@ -114,73 +108,27 @@ public class PhongFragment extends Fragment {
             }
     );
 
-    private void observeRoomData() {
-        roomDAO.getAllRooms().observe(getViewLifecycleOwner(), rooms -> {
-            if (rooms != null) {
-                roomList.clear();
-                roomList.addAll(rooms);
-                roomAdapter.notifyDataSetChanged();
-            }
-
-        });
-    }
 
     private void fetchRoomsFromFirebase() {
 
-        roomListener = new ChildEventListener() {
+        roomRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                RoomEntity newRoom = snapshot.getValue(RoomEntity.class);
-                if (newRoom != null) {
-                    executorService.execute(() -> {
-                            roomDAO.insert(newRoom);
-                    });
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                roomList.clear(); // Xóa danh sách phòng cũ
+                for (DataSnapshot roomSnapshot : snapshot.getChildren()) {
+                    RoomEntity room = roomSnapshot.getValue(RoomEntity.class);
+                    if (room != null) {
+                        roomList.add(room); // Thêm phòng vào danh sách
+                    }
                 }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                RoomEntity updatedRoom = snapshot.getValue(RoomEntity.class);
-                if (updatedRoom != null) {
-                    executorService.execute(() -> {
-                        try {
-                            roomDAO.update(updatedRoom);
-                            Log.d("PhongFragment", "Đã cập nhật phòng: " + updatedRoom.getSoPhong());
-                        } catch (Exception e) {
-                            Log.e("PhongFragment", "Lỗi khi xử lý onChildChanged: " + e.getMessage());
-                        }
-                    });
-                }
-            }
-
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                RoomEntity deletedRoom = snapshot.getValue(RoomEntity.class);
-                if (deletedRoom != null) {
-                    String soPhong = deletedRoom.getSoPhong();
-                    executorService.execute(() -> {
-                        try {
-                            roomDAO.deleteRoomBySoPhong(soPhong);
-                            Log.d("PhongFragment", "Đã xóa phòng theo số phòng: " + soPhong);
-                        } catch (Exception e) {
-                            Log.e("PhongFragment", "Lỗi xóa phòng theo số phòng: " + e.getMessage());
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                // Không xử lý
+                roomAdapter.notifyDataSetChanged(); // Cập nhật RecyclerView sau khi lấy dữ liệu
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("FirebaseSync", "Lỗi ChildEventListener: " + error.getMessage());
+                Log.e("FirebaseSync", "Lỗi khi lấy dữ liệu từ Firebase: " + error.getMessage());
             }
-        };
-        roomRef.addChildEventListener(roomListener);
+        });
     }
 
     @Override
