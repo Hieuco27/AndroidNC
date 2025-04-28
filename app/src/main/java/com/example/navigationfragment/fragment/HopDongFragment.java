@@ -14,14 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.navigationfragment.adapter.ContractAdapter;
 import com.example.navigationfragment.databinding.FragmentHopdongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
-import com.example.navigationfragment.entity.ContractWithDetails;
+import com.example.navigationfragment.entity.ContractDisplay;
+import com.example.navigationfragment.entity.KhachDisplay;
 import com.example.navigationfragment.entity.KhachEntity;
-import com.example.navigationfragment.entity.RoomEntity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +34,9 @@ public class HopDongFragment extends Fragment {
     private ContractAdapter contractAdapter;
 
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference contractRef;
+    private DatabaseReference contractRef, khachRef;
     private ExecutorService executorService;
-    private ChildEventListener contractListener;
-    private List<ContractWithDetails> contractList = new ArrayList<>();
+    private List<ContractDisplay> contractList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -49,14 +49,13 @@ public class HopDongFragment extends Fragment {
         // Firebase
         firebaseDatabase = FirebaseDatabase.getInstance();
         contractRef = firebaseDatabase.getReference("contracts");
-
-        // Adapter
+        khachRef = firebaseDatabase.getReference("khach");
         contractAdapter = new ContractAdapter(
                 getContext(),
                 contractList
         );
         binding.rcv.setAdapter(contractAdapter);
-        binding.rcv.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.rcv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         // Swipe to Refresh
         binding.swipeRefresh.setOnRefreshListener(() -> {
@@ -72,44 +71,46 @@ public class HopDongFragment extends Fragment {
     }
 
 
-
-
     private void loadContracts() {
 
     }
 
 
     private void fetchContractsFromFirebase() {
-        contractListener = new ChildEventListener() {
+        contractRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                ContractEntity newContract = snapshot.getValue(ContractEntity.class);
-                executorService.execute(() -> {
-
-                });
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                ContractEntity updatedContract = snapshot.getValue(ContractEntity.class);
-                if (updatedContract != null) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                contractList.clear(); // Xóa danh sách phòng cũ
+                for (DataSnapshot contractSnapshot : snapshot.getChildren()) {
+                    ContractEntity contract = contractSnapshot.getValue(ContractEntity.class);
+                    if (contract != null) {
+                        ContractDisplay contractDisplay = new ContractDisplay();
+                        contractDisplay.setContract(contract);
+                        khachRef.child(contract.getKhachId()).child("tenKhach").get()
+                                .addOnSuccessListener(dataSnapshot -> {
+                                    contractDisplay.setKhachName(dataSnapshot.getValue(String.class));
+                                    contractList.add(contractDisplay);
+                                    if (contractList.size() == snapshot.getChildrenCount()) {
+                                        contractAdapter.updateData(contractList);
+                                    }
+                                }).addOnFailureListener(
+                                        runnable -> {
+                                            contractDisplay.setKhachName("KXD");
+                                            contractList.add(contractDisplay);
+                                            if (contractList.size() == snapshot.getChildrenCount()) {
+                                                contractAdapter.updateData(contractList);
+                                            }
+                                        }
+                                );
+                    }
                 }
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                ContractEntity deletedContract = snapshot.getValue(ContractEntity.class);
-                if (deletedContract != null) {
-                    executorService.execute(() -> {
-                    });
-                }
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FirebaseSync", "Lỗi khi lấy dữ liệu từ Firebase: " + error.getMessage());
             }
-
-
-            @Override public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-            @Override public void onCancelled(@NonNull DatabaseError error) {}
-        };
-        contractRef.addChildEventListener(contractListener);
+        });
     }
 
     @Override
@@ -121,9 +122,7 @@ public class HopDongFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (contractListener != null) {
-            contractRef.removeEventListener(contractListener);
-        }
+
         if (executorService != null && !executorService.isShutdown()) {
             executorService.shutdown();
         }

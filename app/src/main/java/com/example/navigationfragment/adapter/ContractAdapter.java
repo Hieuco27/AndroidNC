@@ -21,7 +21,7 @@ import com.example.navigationfragment.R;
 import com.example.navigationfragment.action.HopDongDetail;
 import com.example.navigationfragment.databinding.ItemAddHopdongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
-import com.example.navigationfragment.entity.ContractWithDetails;
+import com.example.navigationfragment.entity.ContractDisplay;
 import com.example.navigationfragment.entity.KhachEntity;
 import com.example.navigationfragment.entity.RoomEntity;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,7 +38,7 @@ import java.util.concurrent.Executors;
 
 public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.ContractViewHolder> {
 
-    private List<ContractWithDetails> contractList;
+    private List<ContractDisplay> contractList;
     private Context context;
 
     private RoomEntity room;
@@ -53,15 +53,18 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     }
 
     // Constructor mới: nhận Context và danh sách contractList ban đầu
-    public ContractAdapter(Context context, List<ContractWithDetails> contractList) {
+    public ContractAdapter(Context context, List<ContractDisplay> contractList) {
         this.context = context;
-        this.contractList = (contractList != null) ? contractList : new ArrayList<>();
+        this.contractList = (contractList != null) ? new ArrayList<>(contractList) : new ArrayList<>();
 
     }
 
 
-    public void updateData(List<ContractWithDetails> contractList) {
-        this.contractList= contractList;
+    public void updateData(List<ContractDisplay> contractList) {
+        this.contractList.clear();
+        if(contractList!=null){
+            this.contractList.addAll(contractList);
+        }
         notifyDataSetChanged();
     }
 
@@ -75,21 +78,14 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onBindViewHolder(@NonNull ContractViewHolder holder, int position) {
-        ContractWithDetails itemcontract = contractList.get(position);
-
+        ContractDisplay itemcontract = contractList.get(position);
         ContractEntity contract = itemcontract.contract;
-        RoomEntity  room = itemcontract.room;
-        KhachEntity khach = itemcontract.khach;
-        if (room== null || itemcontract == null|| khach == null)
-        {
-            return;
-        }
 
         holder.binding.tvStt.setText(String.valueOf(position + 1));
 
         // Gán dữ liệu
         holder.binding.tvHopdong.setText(". Hợp đồng phòng : " + room.getSoPhong());
-        holder.binding.tvKhachthue.setText("Người thuê: " + khach.getTenKhach());
+        holder.binding.tvKhachthue.setText("Người thuê: " + itemcontract.getKhachName());
         holder.binding.tvDatestart.setText("Ngày bắt đầu: " + contract.getStartDate());
         holder.binding.tvDateend.setText("Ngày kết thúc: " + contract.getEndDate());
         holder.binding.tvNguoio.setText("Số người ở: " + contract.getNumberOfGuests());
