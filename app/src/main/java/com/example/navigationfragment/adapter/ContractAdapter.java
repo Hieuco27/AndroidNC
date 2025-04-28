@@ -45,12 +45,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
-    // Constructor hiện tại: chỉ nhận Context, khởi tạo contractList rỗng
-    public ContractAdapter(Context context) {
-        this.context = context;
-        this.contractList = new ArrayList<>();
 
-    }
 
     // Constructor mới: nhận Context và danh sách contractList ban đầu
     public ContractAdapter(Context context, List<ContractDisplay> contractList) {
@@ -78,6 +73,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onBindViewHolder(@NonNull ContractViewHolder holder, int position) {
+        try{
         ContractDisplay itemcontract = contractList.get(position);
         ContractEntity contract = itemcontract.contract;
         RoomEntity room = itemcontract.getRoom();
@@ -172,7 +168,10 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                 return false;
             });
             popup.show();
-        });
+        });}
+        catch (Exception e){
+
+        }
     }
 
     // Hàm kiểm tra hợp đồng có hết hiệu lực không

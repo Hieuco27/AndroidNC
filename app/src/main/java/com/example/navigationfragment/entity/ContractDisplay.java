@@ -3,7 +3,9 @@ package com.example.navigationfragment.entity;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-public class ContractDisplay {
+import java.io.Serializable;
+
+public class ContractDisplay implements Serializable {
 
         public ContractEntity contract;
         private KhachEntity khach;

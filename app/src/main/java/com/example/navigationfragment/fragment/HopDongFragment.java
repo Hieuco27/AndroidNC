@@ -104,10 +104,10 @@ public class HopDongFragment extends Fragment {
                                     // Lấy dữ liệu khách và phòng từ kết quả trả về
                                     DataSnapshot khachSnapshot = (DataSnapshot) results.get(0);
                                     DataSnapshot roomSnapshot = (DataSnapshot) results.get(1);
-
-                                    contractDisplay.setKhach(khachSnapshot.getValue(KhachEntity.class));
-                                    contractDisplay.setRoom(roomSnapshot.getValue(RoomEntity.class));
-
+                                    KhachEntity khachEntity = khachSnapshot.getValue(KhachEntity.class);
+                                    RoomEntity roomEntity = roomSnapshot.getValue(RoomEntity.class);
+                                    contractDisplay.setKhach(khachEntity);
+                                    contractDisplay.setRoom(roomEntity);
                                     // Thêm contractDisplay vào danh sách và cập nhật giao diện
                                     contractList.add(contractDisplay);
                                     if(contractList.size()==snapshot.getChildrenCount()){
