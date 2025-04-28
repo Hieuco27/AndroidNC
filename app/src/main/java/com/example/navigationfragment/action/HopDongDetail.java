@@ -22,8 +22,8 @@ public class HopDongDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityXemttHopdongBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        String contractId = getIntent().getStringExtra("contractId");
-
+        ContractDisplay contract = (ContractDisplay) getIntent().getSerializableExtra("CONTRACT_DISPLAY");
+        loadContractDetails(contract);
 
 
         binding.btnBack.setOnClickListener(v -> {
@@ -32,23 +32,23 @@ public class HopDongDetail extends AppCompatActivity {
         
     }
     private void loadContractDetails(ContractDisplay detail){
-//        ContractEntity contract = detail.contract;
-//        RoomEntity room = detail.room;
-//        KhachEntity khach = detail.khach;
-//
-//        binding.tvHopdongid.setText(contract.getContractId());
-//        binding.tvTrangthai.setText(contract.isStatus() ? "Đang hiệu lực" : "Đã chấm dứt");
-//
-//        binding.tvRoomid.setText(room.getSoPhong());
-//        binding.tvGiaphong.setText(room.getGiaPhong() + " VNĐ");
-//
-//        binding.tvTenkhach.setText(khach.getTenKhach());
-//        binding.tvCccd.setText(khach.getCccd());
-//        binding.tvSdt.setText(khach.getSdt());
-//
-//        binding.tvStartdate.setText(contract.getStartDate());
-//        binding.tvEnddate.setText(contract.getEndDate());
-//        binding.tvTiencoc.setText(contract.getTotalAmount() + " VNĐ");
+        ContractEntity contract = detail.getContract();
+        RoomEntity room = detail.getRoom();
+        KhachEntity khach = detail.getKhach();
+
+        binding.tvHopdongid.setText(contract.getContractId());
+        binding.tvTrangthai.setText(contract.isStatus() ? "Đang hiệu lực" : "Đã chấm dứt");
+
+        binding.tvRoomid.setText(room.getSoPhong());
+        binding.tvGiaphong.setText(room.getGiaPhong() + " VNĐ");
+
+        binding.tvTenkhach.setText(khach.getTenKhach());
+        binding.tvCccd.setText(khach.getCccd());
+        binding.tvSdt.setText(khach.getSdt());
+
+        binding.tvStartdate.setText(contract.getStartDate());
+        binding.tvEnddate.setText(contract.getEndDate());
+        binding.tvTiencoc.setText(contract.getTotalAmount() + " VNĐ");
 
 
     }

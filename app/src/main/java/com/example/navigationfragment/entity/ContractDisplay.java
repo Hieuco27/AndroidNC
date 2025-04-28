@@ -6,7 +6,8 @@ import androidx.room.Relation;
 public class ContractDisplay {
 
         public ContractEntity contract;
-        public String khachName;
+        private KhachEntity khach;
+        private RoomEntity room;
 
         public ContractEntity getContract() {
                 return contract;
@@ -16,11 +17,19 @@ public class ContractDisplay {
                 this.contract = contract;
         }
 
-        public String getKhachName() {
-                return khachName;
+        public KhachEntity getKhach() {
+                return khach;
         }
 
-        public void setKhachName(String khachName) {
-                this.khachName = khachName;
+        public void setKhach(KhachEntity khach) {
+                this.khach = khach;
+        }
+
+        public RoomEntity getRoom() {
+                return room;
+        }
+
+        public void setRoom(RoomEntity room) {
+                this.room = room;
         }
 }

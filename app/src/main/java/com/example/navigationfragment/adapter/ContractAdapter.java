@@ -26,6 +26,7 @@ import com.example.navigationfragment.entity.KhachEntity;
 import com.example.navigationfragment.entity.RoomEntity;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +42,6 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     private List<ContractDisplay> contractList;
     private Context context;
 
-    private RoomEntity room;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
@@ -62,7 +62,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
 
     public void updateData(List<ContractDisplay> contractList) {
         this.contractList.clear();
-        if(contractList!=null){
+        if (contractList != null) {
             this.contractList.addAll(contractList);
         }
         notifyDataSetChanged();
@@ -80,22 +80,23 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     public void onBindViewHolder(@NonNull ContractViewHolder holder, int position) {
         ContractDisplay itemcontract = contractList.get(position);
         ContractEntity contract = itemcontract.contract;
-
+        RoomEntity room = itemcontract.getRoom();
+        KhachEntity khach = itemcontract.getKhach();
         holder.binding.tvStt.setText(String.valueOf(position + 1));
 
         // Gán dữ liệu
         holder.binding.tvHopdong.setText(". Hợp đồng phòng : " + room.getSoPhong());
-        holder.binding.tvKhachthue.setText("Người thuê: " + itemcontract.getKhachName());
+        holder.binding.tvKhachthue.setText("Người thuê: " + khach.getTenKhach());
         holder.binding.tvDatestart.setText("Ngày bắt đầu: " + contract.getStartDate());
         holder.binding.tvDateend.setText("Ngày kết thúc: " + contract.getEndDate());
         holder.binding.tvNguoio.setText("Số người ở: " + contract.getNumberOfGuests());
         holder.binding.tvCar.setText("Số lượng xe: " + contract.getNumberOfCars());
-        
-         holder.itemView.setOnClickListener(v->{
-             Intent intent = new Intent(context, HopDongDetail.class);
-             intent.putExtra("contractId", contract.getContractId());
-             context.startActivity(intent);
-         });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, HopDongDetail.class);
+            intent.putExtra("CONTRACT_DISPLAY", (Serializable) itemcontract);
+            context.startActivity(intent);
+        });
 
         // Cập nhật màu nền ban đầu dựa trên trạng thái hợp đồng
         updateCardBackground(holder, contract);
@@ -144,10 +145,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                             .setPositiveButton("Đồng ý", (dialog, which) -> {
                                 contract.setStatus(false);
                                 updateContract(contract);
-                                if (room != null) {
-                                    room.setKhachId(null); // Phòng trống sau khi chấm dứt
-                                    updateRoom(room);
-                                }
+                                updateRoom(contract.getRoomId(), null);
                                 updateCardBackground(holder, contract); // Cập nhật màu sau khi chấm dứt
                                 Toast.makeText(context, "Đã chấm dứt hợp đồng", Toast.LENGTH_SHORT).show();
                             })
@@ -163,10 +161,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                             .setPositiveButton("Đồng ý", (dialog, which) -> {
                                 contract.setStatus(true);
                                 updateContract(contract);
-                                if (room != null) {
-                                    room.setKhachId(contract.getKhachId()); // Phòng có người ở sau khi khôi phục
-                                    updateRoom(room);
-                                }
+                                updateRoom(contract.getRoomId(), contract.getKhachId());
                                 updateCardBackground(holder, contract); // Cập nhật màu sau khi khôi phục
                                 Toast.makeText(context, "Đã khôi phục hợp đồng", Toast.LENGTH_SHORT).show();
                             })
@@ -218,10 +213,11 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
                 });
     }
 
-    public void updateRoom(RoomEntity room) {
+    public void updateRoom(String roomId, String khachId) {
         FirebaseDatabase.getInstance().getReference("rooms")
-                .child(room.getId())
-                .setValue(room)
+                .child(roomId)
+                .child("khachId")
+                .setValue(khachId)
                 .addOnSuccessListener(aVoid -> {
                 })
                 .addOnFailureListener(e -> {

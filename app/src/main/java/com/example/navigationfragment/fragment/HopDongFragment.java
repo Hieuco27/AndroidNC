@@ -11,12 +11,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.navigationfragment.R;
 import com.example.navigationfragment.adapter.ContractAdapter;
 import com.example.navigationfragment.databinding.FragmentHopdongBinding;
 import com.example.navigationfragment.entity.ContractEntity;
 import com.example.navigationfragment.entity.ContractDisplay;
 import com.example.navigationfragment.entity.KhachDisplay;
 import com.example.navigationfragment.entity.KhachEntity;
+import com.example.navigationfragment.entity.RoomEntity;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,13 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HopDongFragment extends Fragment {
     private FragmentHopdongBinding binding;
     private ContractAdapter contractAdapter;
 
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference contractRef, khachRef;
+    private DatabaseReference contractRef, khachRef,roomRef;
     private ExecutorService executorService;
     private List<ContractDisplay> contractList = new ArrayList<>();
 
@@ -50,6 +55,7 @@ public class HopDongFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         contractRef = firebaseDatabase.getReference("contracts");
         khachRef = firebaseDatabase.getReference("khach");
+        roomRef=firebaseDatabase.getReference("rooms");
         contractAdapter = new ContractAdapter(
                 getContext(),
                 contractList
@@ -81,27 +87,41 @@ public class HopDongFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 contractList.clear(); // Xóa danh sách phòng cũ
+
                 for (DataSnapshot contractSnapshot : snapshot.getChildren()) {
                     ContractEntity contract = contractSnapshot.getValue(ContractEntity.class);
                     if (contract != null) {
                         ContractDisplay contractDisplay = new ContractDisplay();
                         contractDisplay.setContract(contract);
-                        khachRef.child(contract.getKhachId()).child("tenKhach").get()
-                                .addOnSuccessListener(dataSnapshot -> {
-                                    contractDisplay.setKhachName(dataSnapshot.getValue(String.class));
+
+                        // Lấy dữ liệu khách và phòng đồng thời
+                        Task<DataSnapshot> khachTask = khachRef.child(contract.getKhachId()).get();
+                        Task<DataSnapshot> roomTask = roomRef.child(contract.getRoomId()).get();
+
+                        // Khi cả 2 tác vụ đều hoàn thành
+                        Tasks.whenAllSuccess(khachTask, roomTask)
+                                .addOnSuccessListener(results -> {
+                                    // Lấy dữ liệu khách và phòng từ kết quả trả về
+                                    DataSnapshot khachSnapshot = (DataSnapshot) results.get(0);
+                                    DataSnapshot roomSnapshot = (DataSnapshot) results.get(1);
+
+                                    contractDisplay.setKhach(khachSnapshot.getValue(KhachEntity.class));
+                                    contractDisplay.setRoom(roomSnapshot.getValue(RoomEntity.class));
+
+                                    // Thêm contractDisplay vào danh sách và cập nhật giao diện
                                     contractList.add(contractDisplay);
-                                    if (contractList.size() == snapshot.getChildrenCount()) {
-                                        contractAdapter.updateData(contractList);
-                                    }
-                                }).addOnFailureListener(
-                                        runnable -> {
-                                            contractDisplay.setKhachName("KXD");
-                                            contractList.add(contractDisplay);
-                                            if (contractList.size() == snapshot.getChildrenCount()) {
-                                                contractAdapter.updateData(contractList);
-                                            }
-                                        }
-                                );
+                                    if(contractList.size()==snapshot.getChildrenCount()){
+                                    contractAdapter.updateData(contractList);}
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Xử lý khi có lỗi
+                                    Log.e("FirebaseSync", "Lỗi khi lấy dữ liệu khách hoặc phòng: " + e.getMessage());
+                                    contractDisplay.setKhach(null);
+                                    contractDisplay.setRoom(null);
+                                    contractList.add(contractDisplay);
+                                    if(contractList.size()==snapshot.getChildrenCount()){
+                                        contractAdapter.updateData(contractList);}
+                                });
                     }
                 }
             }
@@ -112,6 +132,8 @@ public class HopDongFragment extends Fragment {
             }
         });
     }
+
+
 
     @Override
     public void onResume() {
