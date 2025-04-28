@@ -63,7 +63,7 @@ public class KhachFragment extends Fragment {
                     if (khach != null) {
                         KhachDisplay khachDisplay = new KhachDisplay();
                         khachDisplay.setKhach(khach);
-                        roomRef.child(khach.getRoomId()).child("name").get()
+                        roomRef.child(khach.getRoomId()).child("soPhong").get()
                                 .addOnSuccessListener(dataSnapshot -> {
                                     khachDisplay.setRoomName(dataSnapshot.getValue(String.class));
                                     khachDisplays.add(khachDisplay);
