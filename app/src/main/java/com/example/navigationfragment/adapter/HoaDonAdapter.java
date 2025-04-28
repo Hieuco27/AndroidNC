@@ -12,20 +12,27 @@ import com.example.navigationfragment.action.HoaDonDetail;
 import com.example.navigationfragment.databinding.ItemAddHoadonBinding;
 import com.example.navigationfragment.entity.ContractEntity;
 import com.example.navigationfragment.entity.HoaDonEntity;
-import com.example.navigationfragment.entity.HoaDonWithRoom;
+import com.example.navigationfragment.entity.HoaDonDisplay;
 import com.example.navigationfragment.entity.RoomEntity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.HoaDonViewHolder> {
-    private List<HoaDonWithRoom> hoaDonList;
+    private List<HoaDonDisplay> hoaDonList;
     private Context context;
-    public HoaDonAdapter(List<HoaDonWithRoom> hoaDonList, Context context) {
-        this.hoaDonList = hoaDonList;
+    public HoaDonAdapter(List<HoaDonDisplay> hoaDonList, Context context) {
+        this.hoaDonList = new ArrayList<>(hoaDonList);
         this.context = context;
     }
-    public void upDateData(List<HoaDonWithRoom> hoaDonList){
-        this.hoaDonList = hoaDonList;
+    public void updateData(List<HoaDonDisplay> hoaDonList){
+        if(hoaDonList==null){
+            return;
+        }
+        this.hoaDonList.clear();
+
+        this.hoaDonList.addAll(hoaDonList);
         notifyDataSetChanged();
     }
     public  HoaDonAdapter(Context context) {
@@ -43,10 +50,10 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.HoaDonView
 
     @Override
     public void onBindViewHolder(@NonNull HoaDonAdapter.HoaDonViewHolder holder, int position) {
-        HoaDonWithRoom item = hoaDonList.get(position);
+      try{
+        HoaDonDisplay item = hoaDonList.get(position);
 
         HoaDonEntity hoaDon = item.hoaDon;
-        ContractEntity contract= item.contract;
         RoomEntity room = item.room;
         if (hoaDon == null || room == null) {
             return;
@@ -72,35 +79,10 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.HoaDonView
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent= new Intent(context, HoaDonDetail.class);
-            intent.putExtra("hoaDonId", hoaDon.getHoaDonId());
-            intent.putExtra("tenHoaDon", hoaDon.getTenHoaDon());
-            intent.putExtra("soPhong", room.getSoPhong());
-/*
-            intent.putExtra("soNguoi",contract.getNumberOfGuests());
-*/
-/*
-            intent.putExtra("tenKhach",contract.getKhachId());
-*/
-            intent.putExtra("ngayTao", hoaDon.getNgayTao());
-            intent.putExtra("giaPhong", room.getGiaPhong());
-            intent.putExtra("giaDichVu", room.getGiaDichVu());
-            //Số lượng nước và điện
-            intent.putExtra("soDien", hoaDon.getSoDien());
-            intent.putExtra("soNuoc", hoaDon.getSoNuoc());
-            // Đơn giá điện nước
-            intent.putExtra("giaDien", room.getGiaDien());
-            intent.putExtra("giaNuoc", room.getGiaNuoc());
-            // Thành tiền điện nước
-            intent.putExtra("tienNuoc", tienNuoc);
-            intent.putExtra("tienDien", tienDien);
-
-
-            intent.putExtra("tongTien", hoaDon.getTongTien());
-            intent.putExtra("daThanhToan", hoaDon.isDaThanhToan());
-            intent.putExtra("ghiChu", hoaDon.getGhiChu());
-
+            intent.putExtra("HOADONDISPLAY",(Serializable) item);
             context.startActivity(intent);
-        });
+        });}
+      catch (Exception e){};
     }
 
     @Override

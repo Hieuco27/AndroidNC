@@ -30,7 +30,7 @@ public class AddHoaDon extends AppCompatActivity {
     private double giaNuoc = 0;
     private double giaDichVu=0;
     private String roomId="";
-
+    private String khachId="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +42,7 @@ public class AddHoaDon extends AppCompatActivity {
 
         // Nhận số phòng từ Intent
         soPhong = getIntent().getStringExtra("SO_PHONG");
+        khachId=getIntent().getStringExtra("KHACH_ID");
         if (soPhong != null) {
             binding.tvPhong.setText("Phòng: " + soPhong);
             binding.tvPhong.setEnabled(false);
@@ -121,7 +122,7 @@ public class AddHoaDon extends AppCompatActivity {
         hoaDon.setGhiChu(ghiChu);
         hoaDon.setTongTien(tongTien);
         hoaDon.setDaThanhToan(daThanhToan);
-
+        hoaDon.setKhachId(khachId);
         // Lưu vào Room và Firebase
         Executors.newSingleThreadExecutor().execute(() -> {
             hoaDonRef.child(idHoaDon).setValue(hoaDon);

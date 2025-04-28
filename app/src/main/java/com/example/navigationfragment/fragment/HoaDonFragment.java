@@ -15,13 +15,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.navigationfragment.adapter.HoaDonAdapter;
 import com.example.navigationfragment.databinding.FragmentHoadonBinding;
+import com.example.navigationfragment.entity.ContractDisplay;
+import com.example.navigationfragment.entity.ContractEntity;
 import com.example.navigationfragment.entity.HoaDonEntity;
-import com.example.navigationfragment.entity.HoaDonWithRoom;
+import com.example.navigationfragment.entity.HoaDonDisplay;
+import com.example.navigationfragment.entity.KhachEntity;
+import com.example.navigationfragment.entity.RoomEntity;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +38,9 @@ import java.util.concurrent.Executors;
 public class HoaDonFragment extends Fragment {
     FragmentHoadonBinding binding;
     private HoaDonAdapter hoaDonAdapter;
-    private List<HoaDonWithRoom> hoaDonList = new ArrayList<>();
+    private List<HoaDonDisplay> hoaDonList = new ArrayList<>();
     private FirebaseDatabase firebaseDatabase;
-    private HoaDonEntity hoaDon;
-    private DatabaseReference hoaDonRef;
+    private DatabaseReference hoaDonRef,khachRef,roomRef;
     private ExecutorService executorService;
     private ChildEventListener hoaDonListener;
 
@@ -49,14 +55,13 @@ public class HoaDonFragment extends Fragment {
         // Khởi tạo Firebase
         firebaseDatabase = FirebaseDatabase.getInstance();
         hoaDonRef = firebaseDatabase.getReference("hoadon");
-
-
+        khachRef = firebaseDatabase.getReference("khach");
+        roomRef=firebaseDatabase.getReference("rooms");
         //khởi ta adapter
         hoaDonAdapter = new HoaDonAdapter(hoaDonList, getContext());
         binding.rcv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rcv.setAdapter(hoaDonAdapter);
 
-        observeHoaDonData();
         // Lấy dữ liệu từ Firebase
         fetchHoaDonDataFromFirebase();
 
@@ -91,55 +96,56 @@ public class HoaDonFragment extends Fragment {
 
         return binding.getRoot();
     }
-    private void observeHoaDonData(){
 
-    }
     private void fetchHoaDonDataFromFirebase(){
-        hoaDonListener= new ChildEventListener() {
+        hoaDonRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                hoaDonList.clear(); // Xóa danh sách phòng cũ
 
-                HoaDonEntity newHoaDon = snapshot.getValue(HoaDonEntity.class);
-                if (newHoaDon != null) {
-                    executorService.execute(() -> {
+                for (DataSnapshot hoadonSnapshot : snapshot.getChildren()) {
+                    HoaDonEntity hoadon = hoadonSnapshot.getValue(HoaDonEntity.class);
+                    if (hoadon != null) {
+                        HoaDonDisplay hoaDonDisplay = new HoaDonDisplay();
+                        hoaDonDisplay.setHoaDon(hoadon);
 
-                    });
+                        // Lấy dữ liệu khách và phòng đồng thời
+                        Task<DataSnapshot> khachTask = khachRef.child(hoadon.getKhachId()).get();
+                        Task<DataSnapshot> roomTask = roomRef.child(hoadon.getRoomId()).get();
+
+                        // Khi cả 2 tác vụ đều hoàn thành
+                        Tasks.whenAllSuccess(khachTask, roomTask)
+                                .addOnSuccessListener(results -> {
+                                    // Lấy dữ liệu khách và phòng từ kết quả trả về
+                                    DataSnapshot khachSnapshot = (DataSnapshot) results.get(0);
+                                    DataSnapshot roomSnapshot = (DataSnapshot) results.get(1);
+                                    KhachEntity khachEntity = khachSnapshot.getValue(KhachEntity.class);
+                                    RoomEntity roomEntity = roomSnapshot.getValue(RoomEntity.class);
+                                    hoaDonDisplay.setRoom(roomEntity);
+                                    hoaDonDisplay.setKhach(khachEntity);
+                                    // Thêm contractDisplay vào danh sách và cập nhật giao diện
+                                    hoaDonList.add(hoaDonDisplay);
+                                    if(hoaDonList.size()==snapshot.getChildrenCount()){
+                                        hoaDonAdapter.updateData(hoaDonList);}
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Xử lý khi có lỗi
+                                    Log.e("FirebaseSync", "Lỗi khi lấy dữ liệu khách hoặc phòng: " + e.getMessage());
+                                    hoaDonDisplay.setKhach(null);
+                                    hoaDonDisplay.setRoom(null);
+                                    hoaDonList.add(hoaDonDisplay);
+                                    if(hoaDonList.size()==snapshot.getChildrenCount()){
+                                        hoaDonAdapter.updateData(hoaDonList);}
+                                });
+                    }
                 }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                HoaDonEntity updatedHoaDon = snapshot.getValue(HoaDonEntity.class);
-                if (updatedHoaDon != null) {
-                    executorService.execute(() -> {
-                    });
-                }
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                HoaDonEntity deletedHoaDon = snapshot.getValue(HoaDonEntity.class);
-                if (deletedHoaDon != null) {
-                    executorService.execute(() -> {
-                    });
-                }
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("FirebaseSync", "Lỗi khi lấy dữ liệu từ Firebase: " + error.getMessage());
             }
-        };
-        hoaDonRef.addChildEventListener(hoaDonListener);
-
+        });
     }
 
     @Override

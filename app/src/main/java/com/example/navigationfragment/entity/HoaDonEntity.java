@@ -6,23 +6,13 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "hoadon",
-        foreignKeys = {
-                @ForeignKey(entity = ContractEntity.class,
-                        parentColumns = "contractId",
-                        childColumns = "hopdongId",
-                        onDelete = ForeignKey.CASCADE)
-        }
-)
-
 public class HoaDonEntity {
 
-    @PrimaryKey
-    @NonNull
+
     private String hoaDonId;
      private String hopdongId;
-     @ColumnInfo(name="roomId")
      private String roomId;
+     private String khachId;
 
      private String soPhong;
     private String tenHoaDon;
@@ -36,7 +26,7 @@ public class HoaDonEntity {
     public HoaDonEntity() {
     }
 
-    public HoaDonEntity(@NonNull String hoaDonId, String hopdongId, String tenHoaDon, String ngayTao, int soDien, int soNuoc, double tongTien, String ghiChu, boolean daThanhToan) {
+    public HoaDonEntity(@NonNull String hoaDonId, String hopdongId, String tenHoaDon, String ngayTao, int soDien, int soNuoc, double tongTien, String ghiChu, boolean daThanhToan,String khachId) {
         this.hoaDonId = hoaDonId;
         this.hopdongId = hopdongId;
         this.tenHoaDon = tenHoaDon;
@@ -46,6 +36,15 @@ public class HoaDonEntity {
         this.tongTien = tongTien;
         this.ghiChu = ghiChu;
         this.daThanhToan = daThanhToan;
+        this.khachId=khachId;
+    }
+
+    public String getKhachId() {
+        return khachId;
+    }
+
+    public void setKhachId(String khachId) {
+        this.khachId = khachId;
     }
 
     public String getGhiChu() {

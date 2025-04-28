@@ -19,6 +19,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.navigationfragment.databinding.ActivityXemttHoadonBinding;
+import com.example.navigationfragment.entity.HoaDonDisplay;
+import com.example.navigationfragment.entity.HoaDonEntity;
+import com.example.navigationfragment.entity.KhachEntity;
+import com.example.navigationfragment.entity.RoomEntity;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,35 +30,38 @@ import java.io.OutputStream;
 
 public class HoaDonDetail extends AppCompatActivity {
     ActivityXemttHoadonBinding binding;
-    // Biến tạm để lưu dữ liệu từ Intent
-    private String tenHoaDon, soPhong, tenKhach, ngayTao, ghiChu;
-    private int soNguoi, soDien, soNuoc;
-    private double giaPhong, giaDichVu, giaDien, giaNuoc, tienNuoc, tienDien, tongTien;
-    private boolean daThanhToan;
+    private HoaDonDisplay hoaDonDisplay;
+    private HoaDonEntity hoadon;
+    private RoomEntity room;
+    private KhachEntity khach;
+    private Double tienDien;
+    private Double tienNuoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityXemttHoadonBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
-
-        getDataFromIntent();
+        hoaDonDisplay= (HoaDonDisplay) getIntent().getSerializableExtra("HOADONDISPLAY");
+        room=hoaDonDisplay.getRoom();
+        khach=hoaDonDisplay.getKhach();
+        hoadon=hoaDonDisplay.getHoaDon();
+        tienDien=hoadon.getSoDien()*room.getGiaDien();
+        tienNuoc=hoadon.getSoNuoc()*room.getGiaNuoc();
         showDataToViews();
         // Bill gửi hóa đơn
         binding.btnSendMessage.setOnClickListener(v -> {
-            String message = "Hóa đơn: " + tenHoaDon + "\n"
-                    + "Phòng: " + soPhong + "\n"
-                    + "Khách: " + tenKhach + "\n"
-                    + "Ngày tạo: " + ngayTao + "\n"
-                    + "Tiền phòng: " + formatCurrency(giaPhong) + "\n"
-                    + "Tiền dịch vụ: " + formatCurrency(giaDichVu) + "\n"
-                    + "Điện: " + soDien + " x " + formatCurrency(giaDien) + " = " + formatCurrency(tienDien) + "\n"
-                    + "Nước: " + soNuoc + " x " + formatCurrency(giaNuoc) + " = " + formatCurrency(tienNuoc) + "\n"
-                    + "Tổng tiền: " + formatCurrency(tongTien) + "\n"
-                    + "Trạng thái: " + (daThanhToan ? "Đã thanh toán" : "Chưa thanh toán") + "\n"
-                    + "Ghi chú: " + ghiChu;
+            String message = "Hóa đơn: " + hoadon.getTenHoaDon() + "\n"
+                    + "Phòng: " + room.getSoPhong() + "\n"
+                    + "Khách: " + khach.getTenKhach() + "\n"
+                    + "Ngày tạo: " + hoadon.getNgayTao() + "\n"
+                    + "Tiền phòng: " + formatCurrency(room.getGiaPhong()) + "\n"
+                    + "Tiền dịch vụ: " + formatCurrency(room.getGiaDichVu()) + "\n"
+                    + "Điện: " + hoadon.getSoDien() + " x " + formatCurrency(room.getGiaDien()) + " = " + formatCurrency(tienDien) + "\n"
+                    + "Nước: " + hoadon.getSoNuoc() + " x " + formatCurrency(room.getGiaNuoc()) + " = " + formatCurrency(tienNuoc) + "\n"
+                    + "Tổng tiền: " + formatCurrency(hoadon.getTongTien()) + "\n"
+                    + "Trạng thái: " + (hoadon.isDaThanhToan() ? "Đã thanh toán" : "Chưa thanh toán") + "\n"
+                    + "Ghi chú: " + hoadon.getGhiChu();
 
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
@@ -81,52 +88,33 @@ public class HoaDonDetail extends AppCompatActivity {
 
     }
 
-    private void getDataFromIntent() {
-        Intent intent = getIntent();
-        tenHoaDon = intent.getStringExtra("tenHoaDon");
-        soPhong = intent.getStringExtra("soPhong");
-        tenKhach = intent.getStringExtra("tenKhach");
-        ngayTao = intent.getStringExtra("ngayTao");
-        ghiChu = intent.getStringExtra("ghiChu");
 
-        soNguoi = intent.getIntExtra("soNguoi", 0);
-        giaPhong = intent.getDoubleExtra("giaPhong", 0);
-        giaDichVu = intent.getDoubleExtra("giaDichVu", 0);
-        soDien = intent.getIntExtra("soDien", 0);
-        soNuoc = intent.getIntExtra("soNuoc", 0);
-        giaDien = intent.getDoubleExtra("giaDien", 0);
-        giaNuoc = intent.getDoubleExtra("giaNuoc", 0
-        );
-
-        tienNuoc = intent.getDoubleExtra("tienNuoc", 0);
-        tienDien = intent.getDoubleExtra("tienDien", 0);
-        tongTien = giaPhong + giaDichVu + tienDien + tienNuoc;
-        daThanhToan = intent.getBooleanExtra("daThanhToan", false);
-    }
 
     // Hien thi du lieu len man hinh
     private void showDataToViews() {
-        binding.tvTenHoaDon.setText(tenHoaDon);
-        binding.tvSoPhong.setText("Số phòng: " + soPhong);
-        binding.tvTenKhach.setText("Tên khách: " + tenKhach);
-        binding.tvSoNguoi.setText("Số người: " + soNguoi);
+        binding.tvTenHoaDon.setText("Hóa đơn: " + hoadon.getTenHoaDon());
+        binding.tvSoPhong.setText("Phòng: " + room.getSoPhong());
+        binding.tvTenKhach.setText("Khách: " + khach.getTenKhach());
+//        binding.tvNgayTao.setText("Ngày tạo: " + hoadon.getNgayTao());
 
-        binding.tvGiaPhong.setText(formatCurrency(giaPhong));
-        binding.tvTongGiaPhong.setText(formatCurrency(giaPhong));
-        binding.tvGiaDichVu.setText(formatCurrency(giaDichVu));
-        binding.tvTongDichVu.setText(formatCurrency(giaDichVu));
+        binding.tvGiaPhong.setText("Tiền phòng: " + formatCurrency(room.getGiaPhong()));
+        binding.tvTongGiaPhong.setText(formatCurrency(room.getGiaPhong()));
 
-        binding.tvSoDien.setText(String.valueOf(soDien));
-        binding.tvSoNuoc.setText(String.valueOf(soNuoc));
+        binding.tvGiaDichVu.setText("Tiền dịch vụ: " + formatCurrency(room.getGiaDichVu()));
+        binding.tvTongDichVu.setText(formatCurrency(room.getGiaDichVu()));
 
-        binding.tvGiaDien.setText(formatCurrency(giaDien));
-        binding.tvGiaNuoc.setText(formatCurrency(giaNuoc));
+        binding.tvSoDien.setText("Điện: " + hoadon.getSoDien() + " x " + formatCurrency(room.getGiaDien()) + " = " + formatCurrency(tienDien));
+        binding.tvSoNuoc.setText("Nước: " + hoadon.getSoNuoc() + " x " + formatCurrency(room.getGiaNuoc()) + " = " + formatCurrency(tienNuoc));
 
         binding.tvTongDien.setText(formatCurrency(tienDien));
         binding.tvTongNuoc.setText(formatCurrency(tienNuoc));
-        binding.tvTongSoTien.setText(formatCurrency(tongTien));
 
-        binding.tvGhiChu.setText("Nội Dung : " + ghiChu);
+        binding.tvTongSoTien.setText("Tổng tiền: " + formatCurrency(hoadon.getTongTien()));
+
+//        binding.tvTrangThai.setText(hoadon.getTrangThai() ? "Đã thanh toán" : "Chưa thanh toán");
+
+        binding.tvGhiChu.setText("Ghi chú: " + hoadon.getGhiChu());
+
     }
 
     private String formatCurrency(double value) {

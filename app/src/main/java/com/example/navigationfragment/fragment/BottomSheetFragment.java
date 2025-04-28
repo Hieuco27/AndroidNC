@@ -159,7 +159,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                     } else {
                         Intent intent = new Intent(getActivity(), AddHoaDon.class);
                         intent.putExtra("SO_PHONG", room.getSoPhong());
-
+                        intent.putExtra("KHACH_ID",room.getKhachId());
                         startActivity(intent);
                     }
                     dismiss();
