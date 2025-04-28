@@ -26,10 +26,10 @@ public class KhachAdapter extends RecyclerView.Adapter<KhachAdapter.KhachViewHol
         this.context = context;
     }
     // Cập nhật dữ liệu mới
-    public void updateData(List<KhachDisplay> khachList) {
-        this.khachList.clear();
-        if (khachList != null) {
-            this.khachList.addAll(khachList);
+    public void updateData(List<KhachDisplay> newList) {
+        khachList.clear();
+        if (newList != null) {
+            this.khachList.addAll(newList);
         }
         notifyDataSetChanged();
     }
