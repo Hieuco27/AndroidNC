@@ -22,7 +22,7 @@ public class KhachAdapter extends RecyclerView.Adapter<KhachAdapter.KhachViewHol
 
 
     public KhachAdapter(List<KhachDisplay> khachList, Context context) {
-        this.khachList = khachList != null ? khachList : new ArrayList<>(); // Tránh null
+        this.khachList = khachList != null ? new ArrayList<>(khachList) : new ArrayList<>(); // Tránh null
         this.context = context;
     }
     // Cập nhật dữ liệu mới
@@ -48,22 +48,11 @@ public class KhachAdapter extends RecyclerView.Adapter<KhachAdapter.KhachViewHol
 
         KhachDisplay item= khachList.get(position);
 
-        if (item != null && item.getKhach() != null) {
             holder.binding.tvStt.setText(position + 1 + ". ");
             holder.binding.tvSdt.setText("Sđt : " + item.getKhach().getSdt());
             holder.binding.tvCccd.setText("CCCD : " + item.getKhach().getCccd());
             holder.binding.tvKhachthue.setText("Khách thuê : " + item.getKhach().getTenKhach());
-        } else {
-            holder.binding.tvStt.setText(position + 1 + ". ");
-            holder.binding.tvSdt.setText("Sđt : Chưa có");
-            holder.binding.tvCccd.setText("CCCD : Chưa có");
-            holder.binding.tvKhachthue.setText("Khách thuê : Chưa có");
-        }
-        if (item != null) {
-           /* holder.binding.tvPhongtro.setText("Phòng: " + item.getSoPhong());*/
-        } else {
-            holder.binding.tvPhongtro.setText("Phòng: Chưa có");
-        }
+            holder.binding.tvPhongtro.setText("Phòng trọ: "+item.getRoomName());
        holder.itemView.setOnClickListener(v -> {
            Intent intent = new Intent(holder.itemView.getContext(), KhachDetail.class);
            intent.putExtra("KHACH_ID", item.getKhach().getKhachId());
